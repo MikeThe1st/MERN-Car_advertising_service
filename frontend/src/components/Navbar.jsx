@@ -42,7 +42,7 @@ const Navbar = () => {
                         </li>
                         {/* Action buttons */}
                         <li className="nav-item">
-                            <a className="nav-link" href="profile.html">Profil</a>
+                            <a className="nav-link" href="/Profile">Profil</a>
                         </li>
                         <li className="nav-item">
                             <a className="btn btn-sell" href="sell.html" style={{ backgroundColor: '#707070', color: 'white', borderRadius: '30px', padding: '5px 15px' }}>

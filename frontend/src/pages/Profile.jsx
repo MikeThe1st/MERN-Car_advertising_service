@@ -1,6 +1,6 @@
 // src/pages/Profile.jsx
 import React, { useState } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Accordion } from 'react-bootstrap';
 import ProfilePicture from '../components/ProfilePicture ';
 import UserInfo from '../components/UserInfo ';
 import EditableProfileForm from '../components/EditableProfileForm ';
@@ -18,7 +18,7 @@ const Profile = () => {
         profilePicture: 'https://via.placeholder.com/150',
     });
 
-    const [editing, setEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     const [cars] = useState([
         {
@@ -37,7 +37,13 @@ const Profile = () => {
 
     const handleSave = (updatedData) => {
         setUser(updatedData);
-        setEditing(false);  // Wyłącz tryb edycji po zapisaniu
+        setIsEditing(false); // Wyłącz tryb edycji po zapisaniu
+    };
+
+    // Przykładowe statystyki
+    const statistics = {
+        totalCars: cars.length,
+        averagePrice: 20000, // Przykładowa średnia cena
     };
 
     return (
@@ -46,6 +52,9 @@ const Profile = () => {
                 {/* Lewa strona profilu */}
                 <Col md={5} lg={4} className="profile-info-container">
                     <Card className="profile-card shadow-sm p-4">
+                        <h5 className="text-center mb-4" style={{ whiteSpace: 'nowrap' }}>
+                            Edycja profilu
+                        </h5>
                         {/* Zdjęcie profilowe */}
                         <ProfilePicture 
                             src={user.profilePicture} 
@@ -57,12 +66,12 @@ const Profile = () => {
                         {/* Przycisk edycji */}
                         <Button 
                             className="edit-button mt-3" 
-                            onClick={() => setEditing(!editing)}
+                            onClick={() => setIsEditing(!isEditing)}
                         >
-                            {editing ? 'Anuluj' : 'Edytuj Profil'}
+                            {isEditing ? 'Anuluj' : 'Edytuj Profil'}
                         </Button>
                         {/* Formularz edycji poniżej informacji o użytkowniku */}
-                        {editing && (
+                        {isEditing && (
                             <div className="editable-form-container mt-4">
                                 <EditableProfileForm 
                                     initialData={user} 
@@ -74,11 +83,31 @@ const Profile = () => {
                     </Card>
                 </Col>
 
-                {/* Prawa strona z listą samochodów */}
+                {/* Prawa strona z listą samochodów i statystykami w rozwijanej zakładce */}
                 <Col md={7} lg={8} className="car-listings-container">
-                    {cars.map((car) => (
-                        <ListedCar car={car} key={car.id} className="mb-4" />
-                    ))}
+                    <Accordion>
+                        {/* Zakładka z ogłoszeniami */}
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Moje Ogłoszenia</Accordion.Header>
+                            <Accordion.Body>
+                                {cars.map((car) => (
+                                    <ListedCar car={car} key={car.id} className="mb-4" />
+                                ))}
+                            </Accordion.Body>
+                        </Accordion.Item>
+
+                        {/* Zakładka ze statystykami */}
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Statystyki</Accordion.Header>
+                            <Accordion.Body>
+                                <ul>
+                                    <li>Liczba samochodów: {statistics.totalCars}</li>
+                                    <li>Średnia cena samochodu: {statistics.averagePrice} PLN</li>
+                                    {/* Dodaj inne statystyki według potrzeby */}
+                                </ul>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
                 </Col>
             </Row>
         </Container>
