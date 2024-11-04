@@ -1,0 +1,93 @@
+/* Global Styles */
+body {
+    background: #e0e0e0; /* Szare tło */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0; /* Remove default margin */
+}
+
+/* Login Container */
+.login-container {
+    display: flex;
+    width: 800px; /* Szerokość kontenera */
+    height: 550px; /* Zwiększona wysokość kontenera dla lepszej widoczności */
+    border-radius: 10px;
+    overflow: hidden; /* Ukrywa nadmiar dla czystszego wyglądu */
+}
+
+/* Login Form */
+.login-form {
+    flex: 1; /* Pozwól formularzowi rosnąć */
+    padding: 30px; /* Padding wewnętrzny */
+    background-color: #f5f5f5; /* Jasnoszare tło kontenera */
+    display: flex; /* Użycie flex dla lepszego zarządzania układem */
+    flex-direction: column; /* Ustawienie elementów w kolumnie */
+    justify-content: space-between; /* Rozłożenie elementów w formularzu */
+}
+
+/* Form Header */
+.login-form h2 {
+    margin-bottom: 15px; /* Odsunięcie poniżej nagłówka */
+}
+
+/* Form Elements */
+.mb-3 {
+    margin-bottom: 1rem; /* Standardowy margines dla elementów formularza */
+}
+
+/* Input Fields */
+input.form-control {
+    border-radius: 5px; /* Zaokrąglone rogi dla pól wejściowych */
+}
+
+/* Button */
+.btn-primary {
+    background-color: #6b6d6e; /* Bootstrap primary color */
+    border: none; /* Usuń obramowanie */
+    border-radius: 5px; /* Zaokrąglone rogi */
+    padding: 10px; /* Dostosowany padding */
+    width: 100%; /* Pełna szerokość */
+}
+
+.btn-primary:hover {
+    background-color: #464747; /* Ciemniejszy kolor przy najeździe */
+}
+
+/* Footer Links */
+.form-footer {
+    margin-top: 10px; /* Odsunięcie nad linkami w stopce */
+}
+
+/* Register Link */
+.text-secondary {
+    margin-top: 15px; /* Odsunięcie nad linkiem rejestracyjnym */
+}
+
+/* Login Image */
+.Register-image {
+    flex: 1; /* Pozwól obrazowi rosnąć */
+    background-image: url('https://images.pexels.com/photos/2882234/pexels-photo-2882234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover; /* Zasłonić obszar */
+    background-position: center; /* Wyśrodkować obraz */
+    height: 100%; /* Pełna wysokość */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column; /* Ułożenie formularza i obrazu pionowo */
+        height: auto; /* Pozwól na dostosowanie wysokości */
+    }
+
+    .login-form {
+        width: 100%; /* Pełna szerokość na małych ekranach */
+    }
+
+    .login-image {
+        width: 100%; /* Pełna szerokość na małych ekranach */
+        height: 250px; /* Stała wysokość dla obrazu */
+    }
+}

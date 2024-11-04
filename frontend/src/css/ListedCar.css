@@ -1,0 +1,19 @@
+/* src/css/ListedCar.css */
+
+.listed-car-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.listed-car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.listed-car-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
