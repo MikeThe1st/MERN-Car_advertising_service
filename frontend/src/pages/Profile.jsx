@@ -7,6 +7,7 @@ import EditableProfileForm from '../components/EditableProfileForm ';
 import ListedCar from '../components/ListedCar ';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Profile.css';
+import Navbar from '../components/Navbar';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -47,25 +48,27 @@ const Profile = () => {
     };
 
     return (
-        <Container fluid className="profile-page py-5">
-            <Row>
+        <div>
+            <Navbar />
+            <Container fluid className="profile-page p-5">
+                {/* <Row> */}
                 {/* Lewa strona profilu */}
                 <Col md={5} lg={4} className="profile-info-container">
-                    <Card className="profile-card shadow-sm p-4">
+                    <Card className="profile-card shadow-sm p-2">
                         <h5 className="text-center mb-4" style={{ whiteSpace: 'nowrap' }}>
                             Edycja profilu
                         </h5>
                         {/* Zdjęcie profilowe */}
-                        <ProfilePicture 
-                            src={user.profilePicture} 
-                            alt={`${user.name}'s profile`} 
+                        <ProfilePicture
+                            src={user.profilePicture}
+                            alt={`${user.name}'s profile`}
                             className="profile-picture mb-4"
                         />
                         {/* Informacje użytkownika */}
-                        <UserInfo {...user} />
+                        {/* <UserInfo {...user} /> */}
                         {/* Przycisk edycji */}
-                        <Button 
-                            className="edit-button mt-3" 
+                        <Button
+                            className="edit-button mt-3"
                             onClick={() => setIsEditing(!isEditing)}
                         >
                             {isEditing ? 'Anuluj' : 'Edytuj Profil'}
@@ -73,9 +76,9 @@ const Profile = () => {
                         {/* Formularz edycji poniżej informacji o użytkowniku */}
                         {isEditing && (
                             <div className="editable-form-container mt-4">
-                                <EditableProfileForm 
-                                    initialData={user} 
-                                    onSave={handleSave} 
+                                <EditableProfileForm
+                                    initialData={user}
+                                    onSave={handleSave}
                                     className="editable-form expanded-edit-form"
                                 />
                             </div>
@@ -109,8 +112,9 @@ const Profile = () => {
                         </Accordion.Item>
                     </Accordion>
                 </Col>
-            </Row>
-        </Container>
+                {/* </Row> */}
+            </Container>
+        </div>
     );
 };
 

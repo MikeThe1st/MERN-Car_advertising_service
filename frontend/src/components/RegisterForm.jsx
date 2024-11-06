@@ -11,7 +11,7 @@ const RegisterForm = () => {
         password: '',
         confirmPassword: '',
         firstName: '',
-    
+
     });
 
     const [error, setError] = useState('');
@@ -51,7 +51,7 @@ const RegisterForm = () => {
             <div className="login-form">
                 <h2>Rejestracja</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
+                    <div className="">
                         <label htmlFor="firstName" className="form-label">Imię</label>
                         <input
                             type="text"
@@ -63,7 +63,7 @@ const RegisterForm = () => {
                             required
                         />
                     </div>
-                
+
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email</label>
                         <input
@@ -117,4 +117,3 @@ const RegisterForm = () => {
 }
 
 export default RegisterForm;
- 

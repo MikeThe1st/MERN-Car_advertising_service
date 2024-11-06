@@ -11,18 +11,16 @@ import Profile from "./pages/Profile.jsx";
 
 
 function App() {
-	const [count, setCount] = useState(0);
 
 	return (
 		<>
 			<BrowserRouter>
 				<Routes>
-					
-					<Route element={<Login />} path="/Login" />
-					<Route element={<Register />} path="/
-					Register" />
+
+					<Route element={<Login />} path="/login" />
+					<Route element={<Register />} path="/register" />
 					<Route element={<PageMain />} path="/" />
-					<Route element={<Profile/>} path="/Profile"/>
+					<Route element={<Profile />} path="/profile" />
 				</Routes>
 			</BrowserRouter>
 		</>

@@ -1,30 +1,37 @@
 .profile-page {
     display: flex;
     align-items: flex-start;
+    justify-content: center;
+    padding: 1rem;
+    gap: 4vw; 
 }
 
 .profile-info-container {
-    max-width: 400px;
-    margin: 0;
+    flex-basis: 35%; 
+    max-width: 600px;
     padding: 0;
+    margin-bottom: 1rem;
 }
 
 .profile-card {
-    width: 200px;
+    width: 100%;
+    min-width: 10vw;
     background-color: #f8f9fa;
     border: none;
     border-radius: 10px;
-    margin-right: 150px;
 }
 
 .car-listings-container {
-    padding: 0 20px;
+    flex-grow: 1;
+    flex-basis: 60%;
+    max-width: 700px;
+    margin-left: auto;
 }
 
 .profile-picture {
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 }
 
 .edit-button {
@@ -54,8 +61,7 @@
 .car-listings-header:hover {
     background-color: #d0e0ff;
 }
-/* w pliku Profile.css */
+
 .profile-header {
     white-space: nowrap;
 }
-
