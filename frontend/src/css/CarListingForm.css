@@ -1,0 +1,79 @@
+.car-listing-form-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+.car-listing-form-card h3 {
+    color: #333;
+}
+
+button {
+    min-width: 120px;
+   
+}
+.car-listing-form-card {
+    max-width: 800px;  /* Zwiększa szerokość formularza */
+    margin: 0 auto;  /* Centruje formularz na stronie */
+    padding: 2rem;  /* Dodaje przestrzeń wewnętrzną */
+    background-color: #f9f9f9;  /* Kolor tła dla lepszej czytelności */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.car-listing-form-card h3 {
+    color: #333;
+    font-weight: 600;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+button[type="submit"], button[type="button"] {
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+@media (min-width: 992px) {
+    /* Na większych ekranach formularz będzie jeszcze szerszy */
+    .car-listing-form-card {
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Na mniejszych ekranach formularz dopasuje się do szerokości ekranu */
+    .car-listing-form-card {
+        padding: 1rem;
+    }
+}
+.car-listing-form-card {
+    max-width: 1000px;  /* Zwiększa szerokość formularza */
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.car-listing-form-card h3 {
+    color: #333;
+    font-weight: 600;
+}
+
+button[type="submit"], button[type="button"] {
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .car-listing-form-card {
+        padding: 1rem;
+    }
+}

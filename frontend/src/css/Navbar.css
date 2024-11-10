@@ -1,0 +1,52 @@
+/* Navbar.css */
+
+/* Upewniamy się, że navbar zawsze jest na górze strony */
+.custom-navbar {
+    background-color: #555;
+    width: 100%;
+    z-index: 1030; /* Zapewnia, że navbar jest nad innymi elementami */
+}
+
+/* Stylowanie linków nawigacyjnych */
+.nav-link {
+    color: #fff !important;
+}
+
+/* Stylowanie aktywnego linku */
+.nav-link.active {
+    color: #ffeb3b !important; /* Jaskrawy żółty dla aktywnego linku */
+}
+
+/* Stylowanie przycisków nawigacyjnych */
+.btn-sell {
+    background-color: #707070;
+    color: white;
+    border-radius: 30px;
+    padding: 5px 15px;
+}
+
+.btn-login {
+    background-color: #007bff;
+    color: white;
+    border-radius: 30px;
+    padding: 5px 15px;
+}
+
+/* Efekty hover dla przycisków */
+.btn-sell:hover {
+    background-color: #606060;
+}
+
+.btn-login:hover {
+    background-color: #0056b3;
+}
+
+/* Dodajemy odstępy dla przycisków */
+.ms-2 {
+    margin-left: 10px !important;
+}
+
+/* Upewniamy się, że navbar ma pełną szerokość ekranu */
+.navbar {
+    width: 100vw;
+}

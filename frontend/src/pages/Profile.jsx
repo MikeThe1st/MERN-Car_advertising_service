@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, Button, Accordion } from 'react-bootstrap';
 import ProfilePicture from '../components/ProfilePicture ';
 import UserInfo from '../components/UserInfo ';
 import EditableProfileForm from '../components/EditableProfileForm ';
+import CarListingForm from '../components/CarListingForm';
 import ListedCar from '../components/ListedCar ';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Profile.css';
@@ -45,6 +46,10 @@ const Profile = () => {
     const statistics = {
         totalCars: cars.length,
         averagePrice: 20000, // Przykładowa średnia cena
+    };
+    const handleCarSubmission = (carData) => {
+        console.log('Nowe ogłoszenie:', carData);
+        // Zapisz do bazy lub dodaj do listy ogłoszeń
     };
 
     return (
@@ -114,7 +119,9 @@ const Profile = () => {
                 </Col>
                 {/* </Row> */}
             </Container>
+            
         </div>
+        
     );
 };
 
