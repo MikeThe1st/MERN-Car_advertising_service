@@ -31,7 +31,7 @@ const RegisterForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/backend/user/register', formData, {
+            const response = await axios.post('http://localhost:3000/backend/user/register', { name: formData.firstName, email: formData.email, password: formData.password }, {
                 withCredentials: true
             });
             console.log('Response:', response);

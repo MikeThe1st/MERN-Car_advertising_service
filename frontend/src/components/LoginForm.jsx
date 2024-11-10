@@ -34,11 +34,7 @@ const LoginForm = () => {
             const response = await axios.post('http://localhost:3000/backend/user/login', userData, { withCredentials: true });
             console.log('Response:', response);
             if (response.status === 200) {
-                if (response.data.resetPassword) {
-                    window.location.href = `/change-password?login=${response.data.login}`;
-                } else {
-                    window.location.href = '/';
-                }
+                window.location.href = '/';
             } else {
                 alert(response.data);
             }
