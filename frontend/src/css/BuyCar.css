@@ -1,0 +1,71 @@
+/* src/css/BuyCar.css */
+.buy-car-page {
+    background-color: #f5f5f5;
+}
+
+.buy-car-page h2 {
+    color: #333;
+    margin-bottom: 2rem;
+}
+/* src/css/BuyCar.css */
+.buy-car-page {
+    background-color: #f5f5f5;
+}
+
+.buy-car-page h2 {
+    color: #333;
+    margin-bottom: 2rem;
+}
+/* Styl dla pełnoekranowego przewijania */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+.full-width-container {
+    width: 100%;
+    padding: 0;
+}
+
+.full-width-container .car-card {
+    width: 100%; /* Rozciąga każde ogłoszenie na pełną szerokość */
+    margin-bottom: 10px; /* Opcjonalna przestrzeń między ogłoszeniami */
+}
+.car-list {
+    width: 100%;
+    padding: 0;
+    margin-top: 80px; /* Dodaj margines nad listą, aby odsunąć ją od navbaru */
+    box-sizing: border-box;
+}
+
+.buy-car-page {
+    background-color: #f5f5f5;
+}
+
+.buy-car-page h2 {
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.buy-car-body {
+    padding-top: 1000px; /* Dostosuj do wysokości navbaru */
+}
+
+.full-width-container {
+    width: 100%;
+    padding: 0;
+}
+
+.full-width-container .car-card {
+    width: 100%; /* Rozciąga każde ogłoszenie na pełną szerokość */
+    margin-bottom: 10px; /* Opcjonalna przestrzeń między ogłoszeniami */
+}
+
+.car-list {
+    width: 100%;
+    padding: 0;
+    margin-top: 250px; /* Dodaj margines nad listą, aby odsunąć ją od navbaru */
+    box-sizing: border-box;
+}
+.buy-car-page{margin-top: 500px;}

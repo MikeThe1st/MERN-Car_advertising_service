@@ -1,0 +1,86 @@
+/* src/css/CarPage.css */
+.car-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.car-page-header {
+    text-align: left;
+}
+
+.car-page-header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.car-page-header p {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.price {
+    color: #0070f3;
+    font-size: 28px;
+}
+
+.image-gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.gallery-image {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.car-details {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.car-details h2 {
+    font-size: 20px;
+}
+
+.car-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.car-details li {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.seller-info {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.seller-info h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.contact-button,
+.phone-button {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.contact-button:hover,
+.phone-button:hover {
+    background-color: #005bb5;
+}

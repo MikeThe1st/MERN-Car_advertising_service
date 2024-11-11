@@ -1,0 +1,31 @@
+/* src/css/CarCard.css */
+
+.full-width {
+    width: 100%;
+}
+
+.car-card {
+    box-shadow: none;
+    padding: 15px;
+}
+
+.car-image-container {
+    text-align: center;
+}
+
+.car-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.no-background {
+    background-color: transparent;
+    border: none;
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 80vh;
+}

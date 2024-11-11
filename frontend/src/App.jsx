@@ -10,6 +10,9 @@ import PageMain from "./pages/PageMain.jsx";
 import Profile from "./pages/Profile.jsx";
 import SellNewCarForm from "./pages/SellNewCarForm.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import BuyCar from "./pages/BuyCar.jsx";
+import CarPage from "./pages/CarPage.jsx";
 function App() {
 
 	return (
@@ -23,6 +26,9 @@ function App() {
 					<Route element={<Profile />} path="/profile" />
 					<Route element={<SellNewCarForm />} path="/SellNewCarForm" />
 					<Route element={<ContactPage />} path="/ContactPage" />
+					<Route element={<AboutUs />} path="/AboutUs" />
+					<Route element={<BuyCar />} path="/BuyCar" />
+					<Route element={<CarPage />} path="/CarPage" />
 				</Routes>
 			</BrowserRouter>
 		</>

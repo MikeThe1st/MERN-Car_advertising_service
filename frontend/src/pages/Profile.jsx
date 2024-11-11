@@ -5,7 +5,7 @@ import ProfilePicture from '../components/ProfilePicture ';
 import UserInfo from '../components/UserInfo ';
 import EditableProfileForm from '../components/EditableProfileForm ';
 import CarListingForm from '../components/CarListingForm';
-import ListedCar from '../components/ListedCar ';
+import ListedCar from '../components/ListedCar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Profile.css';
 import Navbar from '../components/Navbar';
