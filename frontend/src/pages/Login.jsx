@@ -4,9 +4,9 @@ import Navbar from "../components/Navbar"
 const Login = () => {
 	return (
 		<div className="w-screen">
-		
+			<Navbar />
 			<LoginForm />
-			
+
 		</div>
 	);
 };

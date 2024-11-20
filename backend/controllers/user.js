@@ -49,24 +49,38 @@ export const login = async (req, res) => {
 
 export const getUser = async (req, res) => {
     try {
-        const token = req.cookies.token
+        // Check if token exists in cookies
+        const token = req.cookies?.token;
         if (!token) {
-            return res.status(404).json({ error: 'Token not found.', status: false })
+            return res.status(404).json({ error: "Token not found.", status: false });
         }
 
-        const secretKey = process.env.JWT_SECRET
+        // Check if secret key is configured
+        const secretKey = process.env.JWT_SECRET;
         if (!secretKey) {
-            return res.status(500).json({ error: 'JWT secret key is not configured.', status: false })
+            return res
+                .status(500)
+                .json({ error: "JWT secret key is not configured.", status: false });
         }
 
-        const decodedEmail = jwt.verify(token, secretKey)
+        // Verify and decode the token
+        const decodedEmail = jwt.verify(token, secretKey);
 
-        const checkUser = await User.find({ email: decodedEmail }).select('-password')
-        if (!checkUser) {
-            return res.status(404).json({ msg: "User not found.", status: false })
+        if (!decodedEmail) {
+            return res.status(400).json({ error: "Invalid token payload.", status: false });
         }
-        return res.status(200).json(checkUser)
+
+        // Fetch user from the database
+        const user = await User.findOne({ email: decodedEmail }).select("-password");
+        if (!user) {
+            return res.status(404).json({ msg: "User not found.", status: false });
+        }
+
+        return res.status(200).json([user]);
     } catch (error) {
-        return res.status(500).json({ error: 'Authentication failed.', status: false })
+        console.error("Error during user authentication:", error.message);
+        return res
+            .status(500)
+            .json({ error: "Authentication failed. Please try again.", status: false });
     }
-}
+};

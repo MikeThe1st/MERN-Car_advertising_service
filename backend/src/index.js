@@ -2,6 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
+
 
 import mainRouter from '../routes/main.js'
 
@@ -12,11 +14,13 @@ const mongoURL = process.env.MONGOOSE_CONNECT
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
 app.use(express.json())
+app.use(cookieParser())
+
 
 app.use('/backend', mainRouter)
 
 
-const start = async () => { 
+const start = async () => {
     try {
         // Connect to MongoDB
         await mongoose.connect(mongoURL)
