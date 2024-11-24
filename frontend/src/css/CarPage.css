@@ -84,3 +84,89 @@
 .phone-button:hover {
     background-color: #005bb5;
 }
+/* Styl dla kontenera okienka */
+.message-box {
+    position: fixed; /* Okienko jest przyklejone do strony */
+    bottom: 20px; /* Odległość od dolnej krawędzi */
+    right: 20px; /* Odległość od prawej krawędzi */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(27, 27, 27, 0.1);
+    padding: 16px;
+    z-index: 1000; /* Wyższy indeks, aby zawsze było widoczne */
+    width: 300px; /* Szerokość okienka */
+}
+
+/* Nagłówek i treść okienka */
+.message-box h4 {
+    margin: 0 0 12px 0;
+}
+
+.message-box label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.message-box input,
+.message-box textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Przycisk wysyłania */
+.send-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+/* Przycisk zamykania */
+.close-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.close-button:hover {
+    background-color: #d32f2f;
+}
+.message-box input[type="text"],
+.message-box textarea,
+.message-box input[type="email"],
+.message-box input[type="number"] {
+    background-color: #f9f9f9; /* Kolor tła inputa */
+    color: #333; /* Kolor tekstu */
+    border: 1px solid #ccc; /* Kolor obramowania */
+    padding: 8px; /* Odstęp wewnętrzny */
+    border-radius: 4px; /* Zaokrąglenie narożników */
+    width: 100%; /* Szerokość inputa */
+    box-sizing: border-box; /* Aby padding nie wpływał na szerokość */
+}
+
+.message-box input[type="text"]:focus,
+.message-box textarea:focus {
+    background-color: #ffffff; /* Kolor tła podczas focusa */
+    border-color: #007bff; /* Kolor obramowania podczas focusa */
+    outline: none; /* Usunięcie domyślnego podświetlenia */
+}

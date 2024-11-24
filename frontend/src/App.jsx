@@ -13,6 +13,7 @@ import ContactPage from "./pages/ContactPage.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import BuyCar from "./pages/BuyCar.jsx";
 import CarPage from "./pages/CarPage.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
 function App() {
 
 	return (
@@ -29,6 +30,7 @@ function App() {
 					<Route element={<AboutUs />} path="/AboutUs" />
 					<Route element={<BuyCar />} path="/BuyCar" />
 					<Route element={<CarPage />} path="/CarPage" />
+					<Route element={<AdminPage />} path="/AdminPage" />
 				</Routes>
 			</BrowserRouter>
 		</>

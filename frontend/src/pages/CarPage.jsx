@@ -23,6 +23,7 @@ const CarPage = () => {
             name: "Piotr",
             type: "Osoba prywatna",
             membership: "Sprzedający na OTOMOTO od 2020",
+            phoneNumber: '+48 123 456 789',
         },
     };
 

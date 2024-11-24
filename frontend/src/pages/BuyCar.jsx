@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import CarCard from '../components/CarCard';
 import '../css/BuyCar.css';
 import Navbar from '../components/Navbar';
+import AdvancedSearch from "../components/AdvancedSearch";
 const BuyCar = () => {
     const cars = [
         { id: 1, image: 'link-do-zdjecia', name: 'BMW Seria 3 320d', engineSize: 1995, horsepower: 177, features: 'LIFT, Xenon', location: 'Elbląg (Warmińsko-mazurskie)', timeAgo: '2 minuty temu', sellerType: 'Prywatny sprzedawca', price: '19 900' },
@@ -21,6 +22,7 @@ const BuyCar = () => {
     return (
         <div className="buy-car-page buy-car-body">
             <Navbar />
+            <AdvancedSearch/>
             <div className="car-list">
                 {cars.map((car) => (
                     <CarCard key={car.id} car={car} />
