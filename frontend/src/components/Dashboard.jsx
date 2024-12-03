@@ -7,9 +7,9 @@ import '../css/Dashboard.css';
 const Dashboard = () => {
     // Przykładowe dane użytkowników
     const [users, setUsers] = useState([
-        { id: 1, name: 'Jan Kowalski', email: 'jan.kowalski@example.com', role: 'User' },
-        { id: 2, name: 'Anna Nowak', email: 'anna.nowak@example.com', role: 'Admin' },
-        { id: 3, name: 'Tomasz Zieliński', email: 'tomasz.zielinski@example.com', role: 'Moderator' },
+        { id: 1, name: 'Jan Kowalski', email: 'jan.kowalski@example.com', role: 'User', isActive: true },
+        { id: 2, name: 'Anna Nowak', email: 'anna.nowak@example.com', role: 'Admin', isActive: true },
+        { id: 3, name: 'Tomasz Zieliński', email: 'tomasz.zielinski@example.com', role: 'Moderator', isActive: true },
     ]);
 
     // Funkcja zmieniająca rolę użytkownika
@@ -17,6 +17,24 @@ const Dashboard = () => {
         setUsers((prevUsers) =>
             prevUsers.map((user) =>
                 user.id === id ? { ...user, role: newRole } : user
+            )
+        );
+    };
+
+    // Funkcja do usuwania użytkownika (dezaktywacji)
+    const handleRemoveUser = (id) => {
+        setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user.id === id ? { ...user, isActive: false } : user
+            )
+        );
+    };
+
+    // Funkcja do przywracania użytkownika (aktywacji)
+    const handleRestoreUser = (id) => {
+        setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user.id === id ? { ...user, isActive: true } : user
             )
         );
     };
@@ -43,11 +61,12 @@ const Dashboard = () => {
                             <th>Imię i nazwisko</th>
                             <th>Email</th>
                             <th>Rola</th>
+                            <th>Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
                         {users.map((user) => (
-                            <tr key={user.id}>
+                            <tr key={user.id} className={!user.isActive ? 'inactive-user' : ''}>
                                 <td>{user.id}</td>
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
@@ -57,11 +76,29 @@ const Dashboard = () => {
                                         onChange={(e) =>
                                             handleRoleChange(user.id, e.target.value)
                                         }
+                                        disabled={!user.isActive}
                                     >
                                         <option value="User">User</option>
                                         <option value="Moderator">Moderator</option>
                                         <option value="Admin">Admin</option>
                                     </select>
+                                </td>
+                                <td>
+                                    {user.isActive ? (
+                                        <button
+                                            className="remove-button"
+                                            onClick={() => handleRemoveUser(user.id)}
+                                        >
+                                            Usuń
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="restore-button"
+                                            onClick={() => handleRestoreUser(user.id)}
+                                        >
+                                            Przywróć
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

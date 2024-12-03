@@ -18,27 +18,36 @@ const CarPage = () => {
         engineSize: "2 996 cm3",
         horsepower: "333 KM",
         location: "Kraków, Stare Miasto",
-        images: ["https://images.pexels.com/photos/29352555/pexels-photo-29352555/free-photo-of-audi-suv-in-scenic-desert-landscape-at-sunset.jpeg?auto=compress&cs=tinysrgb&w=300", "https://images.pexels.com/photos/29352562/pexels-photo-29352562/free-photo-of-stylish-white-suv-in-desert-landscape.jpeg?auto=compress&cs=tinysrgb&w=300", "https://images.pexels.com/photos/29352559/pexels-photo-29352559/free-photo-of-luxury-suv-front-view-in-desert-road-scene.jpeg?auto=compress&cs=tinysrgb&w=300"], // Replace with actual image links
+        description:
+            "Mercedes-Benz GL w idealnym stanie. Auto było regularnie serwisowane, używane przez jednego właściciela i garażowane. Samochód nie wymaga żadnych inwestycji, gotowy do jazdy. Zapraszam do kontaktu i obejrzenia pojazdu w Krakowie.",
+        images: [
+            "https://images.pexels.com/photos/29352555/pexels-photo-29352555/free-photo-of-audi-suv-in-scenic-desert-landscape-at-sunset.jpeg?auto=compress&cs=tinysrgb&w=1920",
+            "https://images.pexels.com/photos/29352562/pexels-photo-29352562/free-photo-of-stylish-white-suv-in-desert-landscape.jpeg?auto=compress&cs=tinysrgb&w=1920",
+            "https://images.pexels.com/photos/29352559/pexels-photo-29352559/free-photo-of-luxury-suv-front-view-in-desert-road-scene.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        ],
         seller: {
             name: "Piotr",
             type: "Osoba prywatna",
-            membership: "Sprzedający na OTOMOTO od 2020",
             phoneNumber: '+48 123 456 789',
         },
     };
 
     return (
         <div className="car-page">
-            <Navbar/>
-            <div className="car-page-header">
+            <Navbar />
+            <div className="car-page-gallery">
+                <ImageGallery images={car.images} />
+            </div>
+            <div className="car-page-details">
                 <h1>{car.name}</h1>
                 <p>Używany • {car.year}</p>
                 <p className="price">{car.price}</p>
-            </div>
-            <div className="car-page-body">
-                <ImageGallery images={car.images} />
                 <CarDetails car={car} />
                 <SellerInfo seller={car.seller} location={car.location} />
+            </div>
+            <div className="car-page-description">
+                <h2>Opis</h2>
+                <p>{car.description}</p>
             </div>
         </div>
     );
