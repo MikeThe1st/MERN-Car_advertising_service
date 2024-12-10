@@ -5,7 +5,7 @@ import '../css/CarPage.css';
 const CarDetails = ({ car }) => {
     return (
         <div className="car-details">
-            <h2>Najważniejsze</h2>
+            <h2>Informacje o pojeździe</h2>
             <ul>
                 <li>Przebieg: {car.mileage}</li>
                 <li>Rodzaj paliwa: {car.fuelType}</li>

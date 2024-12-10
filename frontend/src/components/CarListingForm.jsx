@@ -2,19 +2,23 @@ import React, { useState } from 'react';
 import { Form, Button, Col, Row, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/CarListingForm.css';
+import axios from 'axios';
 
-
-const CarListingForm = ({ onSubmit }) => {
+const CarListingForm = ({ email }) => {
     const [carData, setCarData] = useState({
         brand: '',
         model: '',
-        year: '',
+        productionYear: '',
         mileage: '',
         color: '',
-        fuelType: '',
+        fuel: '',
         transmission: '',
         description: '',
+        horsePower: '',
+        price: '',
+        is_damaged: false,
         image: null,
+        addedBy: email
     });
 
     const handleChange = (e) => {
@@ -25,17 +29,46 @@ const CarListingForm = ({ onSubmit }) => {
         }));
     };
 
+    const handleToggleChange = (e) => {
+        const { checked } = e.target;
+        setCarData((prevData) => ({
+            ...prevData,
+            is_damaged: checked,
+        }));
+    };
+
     const handleImageChange = (e) => {
+        console.log(e.target.files);
         setCarData((prevData) => ({
             ...prevData,
             image: e.target.files[0],
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (onSubmit) {
-            onSubmit(carData);
+
+        const formData = new FormData();
+        for (let key in carData) {
+            formData.append(key, carData[key]);
+        }
+
+        try {
+            const response = await axios.post('http://localhost:3000/backend/cars/add-new', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Important for file uploads
+                },
+            });
+
+            if (response.status === 201) {
+                console.log('Car added successfully', response.data);
+                alert("Dodano ogłoszenie.")
+                window.location.href = '/profile'
+            } else {
+                console.log('Failed to add car');
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
@@ -43,12 +76,15 @@ const CarListingForm = ({ onSubmit }) => {
         setCarData({
             brand: '',
             model: '',
-            year: '',
+            productionYear: '',
             mileage: '',
             color: '',
-            fuelType: '',
+            fuel: '',
             transmission: '',
             description: '',
+            horsePower: '',
+            price: '',
+            is_damaged: false,
             image: null,
         });
     };
@@ -85,12 +121,12 @@ const CarListingForm = ({ onSubmit }) => {
                         </Form.Group>
                     </Col>
                     <Col md={4}>
-                        <Form.Group controlId="formYear">
+                        <Form.Group controlId="formProductionYear">
                             <Form.Label>Rok produkcji</Form.Label>
                             <Form.Control
                                 type="number"
-                                name="year"
-                                value={carData.year}
+                                name="productionYear"
+                                value={carData.productionYear}
                                 onChange={handleChange}
                                 placeholder="Rok"
                                 required
@@ -100,6 +136,19 @@ const CarListingForm = ({ onSubmit }) => {
                 </Row>
 
                 <Row className="mb-3">
+                    <Col md={4}>
+                        <Form.Group controlId="formHorsePower">
+                            <Form.Label>Moc silnika (KM)</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="horsePower"
+                                value={carData.horsePower}
+                                onChange={handleChange}
+                                placeholder="Moc"
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
                     <Col md={4}>
                         <Form.Group controlId="formMileage">
                             <Form.Label>Przebieg (km)</Form.Label>
@@ -116,41 +165,51 @@ const CarListingForm = ({ onSubmit }) => {
                     <Col md={4}>
                         <Form.Group controlId="formColor">
                             <Form.Label>Kolor</Form.Label>
-                            <Form.Control
-                                type="text"
+                            <Form.Select
                                 name="color"
                                 value={carData.color}
                                 onChange={handleChange}
-                                placeholder="Kolor"
                                 required
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                        <Form.Group controlId="formFuelType">
-                            <Form.Label>Rodzaj paliwa</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="fuelType"
-                                value={carData.fuelType}
-                                onChange={handleChange}
-                                placeholder="Rodzaj paliwa"
-                                required
-                            />
+                            >
+                                <option value="">Wybierz kolor</option>
+                                <option value="Czarny">Czarny</option>
+                                <option value="Biały">Biały</option>
+                                <option value="Niebieski">Niebieski</option>
+                                <option value="Zielony">Zielony</option>
+                                <option value="Żółty">Żółty</option>
+                                <option value="Czerwony">Czerwony</option>
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                 </Row>
 
                 <Row className="mb-3">
                     <Col md={4}>
-                        <Form.Group controlId="formTransmission">
-                            <Form.Label>Skrzynia biegów</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="transmission"
-                                value={carData.transmission}
+                        <Form.Group controlId="formFuel">
+                            <Form.Label>Rodzaj paliwa</Form.Label>
+                            <Form.Select
+                                name="fuel"
+                                value={carData.fuel}
                                 onChange={handleChange}
-                                placeholder="Skrzynia biegów"
+                                required
+                            >
+                                <option value="">Wybierz rodzaj paliwa</option>
+                                <option value="Benzyna">Benzyna</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Hybryda">Hybryda</option>
+                                <option value="Elektryczny">Elektryczny</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group controlId="formPrice">
+                            <Form.Label>Cena (PLN)</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="price"
+                                value={carData.price}
+                                onChange={handleChange}
+                                placeholder="Cena"
                                 required
                             />
                         </Form.Group>
@@ -171,13 +230,29 @@ const CarListingForm = ({ onSubmit }) => {
                     </Col>
                 </Row>
 
+                {/* Add is_damaged toggle */}
+                <Row className="mb-3">
+                    <Col md={4}>
+                        <Form.Group controlId="formIsDamaged">
+                            <Form.Label>Czy uszkodzony?</Form.Label>
+                            <Form.Check
+                                type="checkbox"
+                                name="is_damaged"
+                                checked={carData.is_damaged}
+                                onChange={handleToggleChange}
+                                label="Uszkodzony"
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
                 <Form.Group className="mb-3" controlId="formImage">
                     <Form.Label>Zdjęcie samochodu</Form.Label>
                     <Form.Control
                         type="file"
                         name="image"
                         onChange={handleImageChange}
-                        accept="image/*"
+                        accept=".png, .jpg, .jpeg"
                     />
                 </Form.Group>
 

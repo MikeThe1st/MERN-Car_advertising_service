@@ -153,10 +153,10 @@ const AdvancedSearch = ({ onSearch }) => {
                     <option value="">Programy specjalne</option>
                 </select>
 
-                <button type="submit" className="search-button">
+                {/* <button type="submit" className="search-button">
                     Szukaj
                 </button>
-                <button className="show-more-button">Pokaż więcej filtrów</button>
+                <button className="show-more-button">Pokaż więcej filtrów</button> */}
             </form>
         </div>
     );

@@ -82,11 +82,6 @@ const Navbar = () => {
 							</a>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="#">
-								Sprzedaj samochód
-							</a>
-						</li>
-						<li className="nav-item">
 							<a className="nav-link" href="/AboutUs">
 								O nas
 							</a>
@@ -102,11 +97,13 @@ const Navbar = () => {
 								Profil
 							</a>
 						</li>
-						<li className="nav-item">
-							<a className="btn btn-sell" href="/SellNewCarForm" role="button">
-								Wystaw auto
-							</a>
-						</li>
+						{isLogged ? (
+							<li className="nav-item">
+								<a className="btn btn-sell" href="/SellNewCarForm" role="button">Wystaw auto
+								</a>
+							</li>) : (<a></a>)
+						}
+
 						<li className="nav-item mx-4">
 							{isLogged ? (
 								<div className="d-flex flex-column flex-lg-row gap-3 align-items-center">
