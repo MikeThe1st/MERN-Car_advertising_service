@@ -12,7 +12,8 @@ const CarListingForm = ({ email }) => {
         mileage: '',
         color: '',
         fuel: '',
-        transmission: '',
+        gearbox: '',
+        location: '',
         description: '',
         horsePower: '',
         price: '',
@@ -38,7 +39,6 @@ const CarListingForm = ({ email }) => {
     };
 
     const handleImageChange = (e) => {
-        console.log(e.target.files);
         setCarData((prevData) => ({
             ...prevData,
             image: e.target.files[0],
@@ -56,14 +56,14 @@ const CarListingForm = ({ email }) => {
         try {
             const response = await axios.post('http://localhost:3000/backend/cars/add-new', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data', // Important for file uploads
+                    'Content-Type': 'multipart/form-data',
                 },
             });
 
             if (response.status === 201) {
                 console.log('Car added successfully', response.data);
-                alert("Dodano ogłoszenie.")
-                window.location.href = '/profile'
+                alert("Dodano ogłoszenie.");
+                window.location.href = '/profile';
             } else {
                 console.log('Failed to add car');
             }
@@ -80,7 +80,8 @@ const CarListingForm = ({ email }) => {
             mileage: '',
             color: '',
             fuel: '',
-            transmission: '',
+            gearbox: '',
+            location: '',
             description: '',
             horsePower: '',
             price: '',
@@ -202,6 +203,21 @@ const CarListingForm = ({ email }) => {
                         </Form.Group>
                     </Col>
                     <Col md={4}>
+                        <Form.Group controlId="formGearbox">
+                            <Form.Label>Skrzynia biegów</Form.Label>
+                            <Form.Select
+                                name="gearbox"
+                                value={carData.gearbox}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Wybierz skrzynię biegów</option>
+                                <option value="Manualna">Manualna</option>
+                                <option value="Automatyczna">Automatyczna</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
                         <Form.Group controlId="formPrice">
                             <Form.Label>Cena (PLN)</Form.Label>
                             <Form.Control
@@ -214,6 +230,24 @@ const CarListingForm = ({ email }) => {
                             />
                         </Form.Group>
                     </Col>
+                </Row>
+                <Row className="mb-3">
+                    <Col md={4}>
+                        <Form.Group controlId="formLocation">
+                            <Form.Label>Lokalizacja</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="location"
+                                value={carData.location || ''} // Ensure backward compatibility
+                                onChange={handleChange}
+                                placeholder="Podaj miasto"
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                <Row className="mb-3">
                     <Col md={8}>
                         <Form.Group controlId="formDescription">
                             <Form.Label>Opis</Form.Label>
@@ -228,10 +262,6 @@ const CarListingForm = ({ email }) => {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
-
-                {/* Add is_damaged toggle */}
-                <Row className="mb-3">
                     <Col md={4}>
                         <Form.Group controlId="formIsDamaged">
                             <Form.Label>Czy uszkodzony?</Form.Label>

@@ -1,5 +1,7 @@
 // src/pages/CarPage.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import ImageGallery from '../components/ImageGallery';
 import CarDetails from '../components/CarDetails';
 import SellerInfo from '../components/SellerInfo.jsx';
@@ -7,43 +9,60 @@ import Navbar from '../components/Navbar.jsx';
 import '../css/CarPage.css';
 
 const CarPage = () => {
-    const car = {
-        name: "Mercedes-Benz GL",
-        year: 2015,
-        price: "99 500 PLN",
-        mileage: "278 000 km",
-        fuelType: "Benzyna",
-        gearbox: "Automatyczna",
-        bodyType: "SUV",
-        engineSize: "2 996 cm3",
-        horsepower: "333 KM",
-        location: "Kraków, Stare Miasto",
-        description:
-            "Mercedes-Benz GL w idealnym stanie. Auto było regularnie serwisowane, używane przez jednego właściciela i garażowane. Samochód nie wymaga żadnych inwestycji, gotowy do jazdy. Zapraszam do kontaktu i obejrzenia pojazdu w Krakowie.",
-        images: [
-            "https://images.pexels.com/photos/29352555/pexels-photo-29352555/free-photo-of-audi-suv-in-scenic-desert-landscape-at-sunset.jpeg?auto=compress&cs=tinysrgb&w=1920",
-            "https://images.pexels.com/photos/29352562/pexels-photo-29352562/free-photo-of-stylish-white-suv-in-desert-landscape.jpeg?auto=compress&cs=tinysrgb&w=1920",
-            "https://images.pexels.com/photos/29352559/pexels-photo-29352559/free-photo-of-luxury-suv-front-view-in-desert-road-scene.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        ],
-        seller: {
-            name: "Piotr",
-            type: "Osoba prywatna",
-            phoneNumber: '+48 123 456 789',
-        },
-    };
+    const location = useLocation(); // Access the full URL location
+    const [car, setCar] = useState(null); // State to store the car data
+    const [loading, setLoading] = useState(true); // State for loading status
+    const [error, setError] = useState(null); // State for error handling
+
+    // Extract the `id` from the query parameters
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('id');
+
+    useEffect(() => {
+        const fetchCar = async () => {
+            if (!id) {
+                setError('No car ID provided.');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await axios.get(`http://localhost:3000/backend/cars/car/${id}`);
+                setCar(response.data);
+            } catch (err) {
+                console.error('Error fetching car:', err);
+                setError('Failed to load car data.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCar();
+    }, [id]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div className="car-page">
             <Navbar />
-            <div className="car-page-gallery">
-                <ImageGallery images={car.images} />
+            <div className="text-center my-4 car-img">
+                <img
+                    src={`http://localhost:3000/public/${car.imgPath}`}
+                    alt={`${car.brand} ${car.model}`}
+                    className="img-fluid rounded shadow"
+                />
             </div>
+            {/* Uncomment this if you use an image gallery */}
+            {/* <div className="car-page-gallery">
+                <ImageGallery images={car.imgPath} />
+            </div> */}
             <div className="car-page-details">
-                <h1>{car.name}</h1>
-                <p>Używany • {car.year}</p>
-                <p className="price">{car.price}</p>
+                <h1>{`${car.brand} ${car.model}`}</h1>
+                <p>Używany • {car.productionYear}</p>
+                {/* <p className="price">{`${car.price.toLocaleString('pl-PL')} PLN`}</p> */}
                 <CarDetails car={car} />
-                <SellerInfo seller={car.seller} location={car.location} />
+                <SellerInfo seller={{ name: car.addedBy, type: "Osoba prywatna" }} location={car.location} />
             </div>
             <div className="car-page-description">
                 <h2>Opis</h2>

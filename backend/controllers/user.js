@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt'
 
 export const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body
+        const { name, email, password, phoneNumber, sellerType } = req.body
 
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        const newUser = new User({ name, email, password: hashedPassword })
+        const newUser = new User({ name, email, password: hashedPassword, phoneNumber, sellerType })
         await newUser.save()
 
         return res.status(200).json(newUser)
@@ -84,3 +84,37 @@ export const getUser = async (req, res) => {
             .json({ error: "Authentication failed. Please try again.", status: false });
     }
 };
+
+export const updateUser = async (req, res) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedUser);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update user.' });
+    }
+}
+
+export const getUserInfo = async (req, res) => {
+    try {
+        const token = req.cookies?.token;
+        if (!token) {
+            return res.status(401).json({ error: 'Token not found.' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(400).json({ error: 'Invalid token.' });
+        }
+
+        const user = await User.findOne({ email: decoded }).select('-password');
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        // Send the user data excluding the password
+        return res.status(200).json(user);
+    } catch (err) {
+        console.error('Error fetching user data:', err);
+        return res.status(500).json({ error: 'Server error.' });
+    }
+}

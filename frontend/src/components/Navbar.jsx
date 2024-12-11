@@ -91,12 +91,6 @@ const Navbar = () => {
 								Kontakt
 							</a>
 						</li>
-						{/* Akcje nawigacyjne */}
-						<li className="nav-item">
-							<a className="nav-link" href="/Profile">
-								Profil
-							</a>
-						</li>
 						{isLogged ? (
 							<li className="nav-item">
 								<a className="btn btn-sell" href="/SellNewCarForm" role="button">Wystaw auto

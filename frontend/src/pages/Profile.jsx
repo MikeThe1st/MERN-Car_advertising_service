@@ -1,84 +1,86 @@
-// src/pages/Profile.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Accordion } from 'react-bootstrap';
-import ProfilePicture from '../components/ProfilePicture ';
-import UserInfo from '../components/UserInfo ';
-import EditableProfileForm from '../components/EditableProfileForm ';
-import CarListingForm from '../components/CarListingForm';
+import ProfilePicture from '../components/ProfilePicture';
+import UserInfo from '../components/UserInfo';
+import EditableProfileForm from '../components/EditableProfileForm';
 import ListedCar from '../components/ListedCar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Profile.css';
 import Navbar from '../components/Navbar';
 
+import axios from 'axios';
+
 const Profile = () => {
-    const [user, setUser] = useState({
-        name: 'Jan Kowalski',
-        email: 'jan.kowalski@example.com',
-        phone: '+48 123 456 789',
-        address: 'Warszawa, Polska',
-        bio: 'Motoryzacyjny entuzjasta z ponad 10-letnim doświadczeniem w sprzedaży aut.',
-        profilePicture: 'https://via.placeholder.com/150',
-    });
-
+    const [user, setUser] = useState(null); // Initially, user is null
+    const [cars, setCars] = useState([]); // Store cars added by user
     const [isEditing, setIsEditing] = useState(false);
+    const [loading, setLoading] = useState(true); // Track loading state
+    const [error, setError] = useState(null); // For error handling
 
-    const [cars] = useState([
-        {
-            id: 1,
-            name: 'Toyota Corolla 2021',
-            description: 'Nowoczesny, ekonomiczny samochód z niskim przebiegiem.',
-            image: 'https://via.placeholder.com/200',
-        },
-        {
-            id: 2,
-            name: 'Mazda CX-5 2020',
-            description: 'SUV z przestronnym wnętrzem, idealny na rodzinne podróże.',
-            image: 'https://via.placeholder.com/200',
-        },
-    ]);
+    // Fetch user data and cars added by the user
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                // Fetch user info
+                const response = await axios.get('http://localhost:3000/backend/user/info', { withCredentials: true });
+                setUser(response.data); // Set user data
+
+                // Fetch cars only after the user is fetched
+                const carsResponse = await axios.get('http://localhost:3000/backend/cars/added-by', {
+                    params: { addedBy: response.data.email }, // Using email as the addedBy parameter
+                });
+                setCars(carsResponse.data); // Set the fetched cars
+            } catch (err) {
+                console.error("Error fetching data:", err);
+                setError('Failed to load data.');
+            } finally {
+                setLoading(false); // Set loading to false once data is fetched
+            }
+        };
+
+        fetchUserData(); // Call function to fetch user and cars data
+    }, []); // Empty dependency array to only run on component mount
+
+    // Show loading or error state
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
     const handleSave = (updatedData) => {
         setUser(updatedData);
-        setIsEditing(false); // Wyłącz tryb edycji po zapisaniu
+        setIsEditing(false); // Turn off editing mode after saving
     };
 
-    // Przykładowe statystyki
+    // Example statistics
     const statistics = {
         totalCars: cars.length,
-        averagePrice: 20000, // Przykładowa średnia cena
-    };
-    const handleCarSubmission = (carData) => {
-        console.log('Nowe ogłoszenie:', carData);
-        // Zapisz do bazy lub dodaj do listy ogłoszeń
+        averagePrice: cars.reduce((total, car) => total + car.price, 0) / cars.length || 0, // Calculate average price
     };
 
     return (
         <div>
             <Navbar />
             <Container fluid className="profile-page p-5">
-                {/* <Row> */}
-                {/* Lewa strona profilu */}
                 <Col md={5} lg={4} className="profile-info-container">
                     <Card className="profile-card shadow-sm p-2">
                         <h5 className="text-center mb-4" style={{ whiteSpace: 'nowrap' }}>
                             Edycja profilu
                         </h5>
-                        {/* Zdjęcie profilowe */}
+                        {/* Profile picture */}
                         <ProfilePicture
-                            src={user.profilePicture}
-                            alt={`${user.name}'s profile`}
+                            src={user?.profilePicture || 'https://via.placeholder.com/150'}
+                            alt={`${user?.name}'s profile`}
                             className="profile-picture mb-4"
                         />
-                        {/* Informacje użytkownika */}
-                        {/* <UserInfo {...user} /> */}
-                        {/* Przycisk edycji */}
+                        {/* User info */}
+                        {/* <UserInfo user={user} /> */}
+                        {/* Edit button */}
                         <Button
                             className="edit-button mt-3"
                             onClick={() => setIsEditing(!isEditing)}
                         >
                             {isEditing ? 'Anuluj' : 'Edytuj Profil'}
                         </Button>
-                        {/* Formularz edycji poniżej informacji o użytkowniku */}
+                        {/* Editable form for updating user info */}
                         {isEditing && (
                             <div className="editable-form-container mt-4">
                                 <EditableProfileForm
@@ -91,37 +93,36 @@ const Profile = () => {
                     </Card>
                 </Col>
 
-                {/* Prawa strona z listą samochodów i statystykami w rozwijanej zakładce */}
                 <Col md={7} lg={8} className="car-listings-container">
                     <Accordion>
-                        {/* Zakładka z ogłoszeniami */}
+                        {/* Car listings tab */}
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Moje Ogłoszenia</Accordion.Header>
                             <Accordion.Body>
-                                {cars.map((car) => (
-                                    <ListedCar car={car} key={car.id} className="mb-4" />
-                                ))}
+                                {cars.length > 0 ? (
+                                    cars.map((car) => (
+                                        <ListedCar car={car} key={car._id} className="mb-4" />
+                                    ))
+                                ) : (
+                                    <p>No cars listed by you yet.</p>
+                                )}
                             </Accordion.Body>
                         </Accordion.Item>
 
-                        {/* Zakładka ze statystykami */}
+                        {/* Statistics tab */}
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Statystyki</Accordion.Header>
                             <Accordion.Body>
                                 <ul>
                                     <li>Liczba samochodów: {statistics.totalCars}</li>
-                                    <li>Średnia cena samochodu: {statistics.averagePrice} PLN</li>
-                                    {/* Dodaj inne statystyki według potrzeby */}
+                                    <li>Średnia cena samochodu: {statistics.averagePrice.toFixed(2)} PLN</li>
                                 </ul>
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>
                 </Col>
-                {/* </Row> */}
             </Container>
-            
         </div>
-        
     );
 };
 

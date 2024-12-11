@@ -11,7 +11,8 @@ const RegisterForm = () => {
         password: '',
         confirmPassword: '',
         firstName: '',
-
+        phoneNumber: '',
+        sellerType: 'Osoba prywatna', // Default value
     });
 
     const [error, setError] = useState('');
@@ -31,12 +32,19 @@ const RegisterForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/backend/user/register', { name: formData.firstName, email: formData.email, password: formData.password }, {
-                withCredentials: true
+            const response = await axios.post('http://localhost:3000/backend/user/register', {
+                name: formData.firstName,
+                email: formData.email,
+                password: formData.password,
+                phoneNumber: formData.phoneNumber,
+                sellerType: formData.sellerType,
+            }, {
+                withCredentials: true,
             });
             console.log('Response:', response);
             if (response.status === 200) {
-                window.location.href = '/login'; // Przekierowanie po pomyślnej rejestracji
+                alert("Utworzono konto, możesz się zalogować.")
+                window.location.href = '/login'; // Redirect after successful registration
             } else {
                 alert(response.data);
             }
@@ -51,7 +59,7 @@ const RegisterForm = () => {
             <div className="login-form">
                 <h2>Rejestracja</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="">
+                    <div className="mb-3">
                         <label htmlFor="firstName" className="form-label">Imię</label>
                         <input
                             type="text"
@@ -76,6 +84,7 @@ const RegisterForm = () => {
                             required
                         />
                     </div>
+
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Hasło</label>
                         <input
@@ -88,6 +97,7 @@ const RegisterForm = () => {
                             required
                         />
                     </div>
+
                     <div className="mb-3">
                         <label htmlFor="confirmPassword" className="form-label">Potwierdź Hasło</label>
                         <input
@@ -100,7 +110,37 @@ const RegisterForm = () => {
                             required
                         />
                     </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="phoneNumber" className="form-label">Numer Telefonu</label>
+                        <input
+                            type="tel"
+                            className="form-control"
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="sellerType" className="form-label">Typ Sprzedawcy</label>
+                        <select
+                            className="form-select"
+                            id="sellerType"
+                            name="sellerType"
+                            value={formData.sellerType}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="Osoba prywatna">Osoba prywatna</option>
+                            <option value="Komis samochodowy">Komis samochodowy</option>
+                        </select>
+                    </div>
+
                     {error && <p className="text-danger">{error}</p>}
+
                     <button type="submit" className="btn btn-primary">Zarejestruj się</button>
                     <div className="form-footer">
                         <a href="#" className="text-secondary">Nie pamiętasz hasła?</a>
@@ -114,6 +154,6 @@ const RegisterForm = () => {
             <div className="Register-image"></div>
         </div>
     );
-}
+};
 
 export default RegisterForm;

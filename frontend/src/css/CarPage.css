@@ -283,3 +283,13 @@
     line-height: 1.6;
     color: #555;
 }
+
+img {
+    max-height: 40vh;
+    /* margin-top: 100px; */
+    /* max-width: 20vh; */
+}
+
+.car-img {
+    padding-top: 40%;
+}

@@ -10,29 +10,29 @@ const CarCard = ({ car }) => {
             <Row>
                 <Col md={3}>
                     <img
-                        src={`http://localhost:3000/public/` + car.imgPath}
-                        alt={`${car.brand} ${car.model}`}
+                        src={`http://localhost:3000/public/` + car?.imgPath}
+                        alt={`${car?.brand} ${car?.model}`}
                         className="car-image"
                     />
                 </Col>
                 <Col md={6}>
                     <div className="car-info">
-                        <h5>{`${car.brand} ${car.model}`}</h5>
+                        <h5>{`${car?.brand} ${car?.model}`}</h5>
                         <p className="car-details">
-                            <span>{`${car.productionYear} • ${car.horsePower} KM • ${car.fuel}`}</span><br />
-                            <span>{`${car.mileage} km • ${car.color}`}</span><br />
-                            <span>{car.location}</span><br />
-                            <span>{car.sellerType}</span>
+                            <span>{`${car?.productionYear} • ${car?.horsePower} KM • ${car.fuel}`}</span><br />
+                            <span>{`${car?.mileage} km • ${car?.color}`}</span><br />
+                            <span>{car?.location}</span><br />
+                            <span>{car?.sellerType}</span>
                         </p>
                         {car.is_damaged && <Badge bg="danger">Uszkodzony</Badge>}
-                        <Badge bg="success">{car.views} Wyświetleń</Badge>
+                        <Badge bg="success">{car?.views} Wyświetleń</Badge>
                     </div>
                 </Col>
                 <Col md={3} className="text-end">
-                    <h4 className="car-price">{`${Number(car.price).toLocaleString('pl-PL')} PLN`}</h4>
+                    <h4 className="car-price">{`${Number(car?.price).toLocaleString('pl-PL')} PLN`}</h4>
 
                     <a href="#" className="financing-link">Sprawdź możliwości finansowania</a>
-                    <Button variant="primary" href={`/ogloszenie/${car._id}`}>Zobacz ogłoszenie</Button>
+                    <Button variant="primary" href={`/CarPage?id=${car?._id}`}>Zobacz ogłoszenie</Button>
                 </Col>
             </Row>
         </Card>

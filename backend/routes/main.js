@@ -1,6 +1,6 @@
 import express from 'express'
-import { register, login, getUser } from '../controllers/user.js'
-import { addCar, getCars } from '../controllers/cars.js'
+import { register, login, getUser, getUserInfo } from '../controllers/user.js'
+import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby } from '../controllers/cars.js'
 import multer from 'multer'
 import path from 'path'
 import Car from '../models/Car.js'
@@ -38,11 +38,13 @@ const mainRouter = express.Router()
 mainRouter.post('/user/register', register)
 mainRouter.post('/user/login', login)
 mainRouter.get('/user/get-user', getUser)
-// mainRouter.post('/user/forgot-password', forgotPassword)
-// mainRouter.post('/user/reset-password', resetPassword)
+mainRouter.get('/user/info', getUserInfo)
 
-// mainRouter.post('/cars/add-new', addCar)
 mainRouter.post('/cars/add-new', upload.single('image'), addCar)
 mainRouter.get('/cars/get-cars', getCars)
+mainRouter.get('/cars/main-page', getMainPageCars)
+mainRouter.get('/cars/car/:id', getCarById);
+mainRouter.get('/cars/added-by', getCarsAddedby);
+getCarsAddedby
 
 export default mainRouter

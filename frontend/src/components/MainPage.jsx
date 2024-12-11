@@ -1,12 +1,29 @@
-import React from 'react';
-import SearchBar from '../components/SearchBar'; // Upewnij się, że ścieżka jest poprawna
-import "../css/MainPage.css"; // Zmień na .css
- // Załaduj własny plik CSS
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import SearchBar from '../components/SearchBar'; // Ensure the path is correct
+import "../css/MainPage.css"; // Ensure the CSS path is correct
 
 const MainPage = () => {
+    const [cars, setCars] = useState([]);
+
+    // Fetch cars from the backend
+    const fetchCars = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/backend/cars/main-page');
+            setCars(response.data); // Assuming the response contains an array of cars
+        } catch (error) {
+            console.error('Error fetching cars:', error);
+        }
+    };
+
+    // Fetch cars when the component mounts
+    useEffect(() => {
+        fetchCars();
+    }, []);
+
     const handleSearch = (query) => {
-        console.log("Wyszukiwanie:", query);
-        // Tutaj dodaj logikę wyszukiwania, np. API
+        console.log("Search query:", query);
+        // Add search logic here
     };
 
     return (
@@ -16,30 +33,39 @@ const MainPage = () => {
                 <p>Najlepsze miejsce na zakup i sprzedaż samochodów</p>
             </header>
 
-            {/* Wyszukiwarka */}
+            {/* Search Bar */}
             <SearchBar onSearch={handleSearch} />
 
-            {/* Sekcja najpopularniejszych samochodów */}
+            {/* Section for popular cars */}
             <section className="mt-4">
                 <h2>Najpopularniejsze samochody</h2>
                 <div className="row">
-                    {/* Przykładowe karty samochodów */}
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <div className="col-md-4" key={index}>
-                            <div className="card mb-4">
-                                <img 
-                                    src={`https://via.placeholder.com/150?text=Samochód+${index + 1}`} 
-                                    className="card-img-top" 
-                                    alt={`Samochód ${index + 1}`} 
-                                />
-                                <div className="card-body">
-                                    <h5 className="card-title">Samochód {index + 1}</h5>
-                                    <p className="card-text">Opis samochodu {index + 1}.</p>
-                                    <a href="#" className="btn btn-primary">Zobacz więcej</a>
+                    {cars.length > 0 ? (
+                        cars.map((car) => (
+                            <div className="col-md-4" key={car._id}>
+                                <div className="card mb-4">
+                                    <img
+                                        src={`http://localhost:3000/public/` + car.imgPath}
+                                        className="card-img-top"
+                                        alt={`${car.brand} ${car.model}`}
+                                    />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{`${car.brand} ${car.model}`}</h5>
+                                        <p className="card-text">
+                                            {`${car.productionYear} • ${car.horsePower} KM • ${car.fuel}`}
+                                            <br />
+                                            {`Cena: ${Number(car.price).toLocaleString('pl-PL')} PLN`}
+                                        </p>
+                                        <a href={`/CarPage/${car._id}`} className="btn btn-primary">
+                                            Zobacz więcej
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-center">Ładowanie samochodów...</p>
+                    )}
                 </div>
             </section>
 
