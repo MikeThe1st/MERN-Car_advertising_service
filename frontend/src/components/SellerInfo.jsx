@@ -1,10 +1,11 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import '../css/CarPage.css';
 
-const SellerInfo = ({ seller, location }) => {
+const SellerInfo = ({ seller, location, loggedUser }) => {
     const [isMessageBoxVisible, setIsMessageBoxVisible] = useState(false);
     const [isPhoneNumberVisible, setIsPhoneNumberVisible] = useState(false);  // Stan do przechowywania widoczności numeru telefonu
     const [messageData, setMessageData] = useState({
+        sender: '',
         subject: '',
         message: '',
     });
@@ -18,33 +19,47 @@ const SellerInfo = ({ seller, location }) => {
     };
 
     const handleSendMessage = () => {
+        setMessageData((prevData) => ({
+            ...prevData,
+            sender: loggedUser._id,
+        }))
         console.log('Wiadomość wysłana:', messageData);
         setIsMessageBoxVisible(false); // Zamknięcie okna po wysłaniu wiadomości
     };
 
     const handleShowPhoneNumber = () => {
+        if (!loggedUser) {
+            return alert('Zaloguj się, aby wyświetlić numer sprzedawcy!')
+        }
         setIsPhoneNumberVisible(true);  // Pokazanie numeru telefonu
     };
 
+    const handleDisplayMessage = () => {
+        if (!loggedUser) {
+            return alert('Zaloguj się, aby wysłać wiadomość!')
+        }
+        setIsMessageBoxVisible(true)
+    }
+
     return (
         <div className="seller-info">
-            <h3>{seller.name}</h3>
-            <p>{seller.type}</p>
-            <p>{seller.membership}</p>
+            <h3>Sprzedawca: {seller.name}</h3>
+            <p>{seller.sellerType || "Osoba prywatna"}</p>
+            {/* <p>{seller.membership}</p> */}
             <button
-                className="contact-button"
-                onClick={() => setIsMessageBoxVisible(true)} // Pokazanie okna do wysyłania wiadomości
+                className="contact-button m-1"
+                onClick={handleDisplayMessage} // Pokazanie okna do wysyłania wiadomości
             >
                 Napisz
             </button>
             <button
-                className="phone-button"
+                className="phone-button m-1"
                 onClick={handleShowPhoneNumber}  // Funkcja wyświetlająca numer telefonu
             >
                 Wyświetl numer
             </button>
             {isPhoneNumberVisible && <p>Numer telefonu: {seller.phoneNumber}</p>} {/* Wyświetlanie numeru telefonu */}
-            <p>{location}</p>
+            <p>Lokalizacja: {location}</p>
 
             {/* Okno wiadomości */}
             {isMessageBoxVisible && (

@@ -56,7 +56,7 @@ const MainPage = () => {
                                             <br />
                                             {`Cena: ${Number(car.price).toLocaleString('pl-PL')} PLN`}
                                         </p>
-                                        <a href={`/CarPage/${car._id}`} className="btn btn-primary">
+                                        <a href={`/CarPage?id=${car._id}`} className="btn btn-primary">
                                             Zobacz więcej
                                         </a>
                                     </div>

@@ -29,7 +29,8 @@ const CarSchema = new mongoose.Schema(
             enum: ["Manualna", "Automatyczna"]
         },
         location: { type: String, required: true },
-        views: { type: Number }
+        views: { type: Number, default: 0 },
+        is_active: { type: Boolean, default: true}
     },
     { timestamps: true }
 );

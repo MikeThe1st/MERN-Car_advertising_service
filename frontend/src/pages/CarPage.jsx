@@ -13,13 +13,41 @@ const CarPage = () => {
     const [car, setCar] = useState(null); // State to store the car data
     const [loading, setLoading] = useState(true); // State for loading status
     const [error, setError] = useState(null); // State for error handling
+    const [seller, setSeller] = useState(null)
 
     // Extract the `id` from the query parameters
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get('id');
 
+    const [user, setUser] = useState(undefined);
+
     useEffect(() => {
-        const fetchCar = async () => {
+        const getUser = async () => {
+            try {
+                const response = await axios.get(
+                    "http://localhost:3000/backend/user/get-user",
+                    { withCredentials: true }
+                );
+                setUser(response.data[0]);
+                console.log(response.data[0])
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        const token = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("token="));
+
+        if (token) {
+            getUser();
+        } else {
+            console.log("No token found.");
+        }
+    }, []);
+
+    useEffect(() => {
+        const timeout = setTimeout(async () => {
             if (!id) {
                 setError('No car ID provided.');
                 setLoading(false);
@@ -28,16 +56,17 @@ const CarPage = () => {
 
             try {
                 const response = await axios.get(`http://localhost:3000/backend/cars/car/${id}`);
-                setCar(response.data);
+                setCar(response.data.updatedCar);
+                setSeller(response.data.seller[0])
             } catch (err) {
                 console.error('Error fetching car:', err);
                 setError('Failed to load car data.');
             } finally {
                 setLoading(false);
             }
-        };
+        }, 300); // Delay of 300ms
 
-        fetchCar();
+        return () => clearTimeout(timeout); // Clear timeout if component unmounts
     }, [id]);
 
     if (loading) return <p>Loading...</p>;
@@ -62,7 +91,8 @@ const CarPage = () => {
                 <p>Używany • {car.productionYear}</p>
                 {/* <p className="price">{`${car.price.toLocaleString('pl-PL')} PLN`}</p> */}
                 <CarDetails car={car} />
-                <SellerInfo seller={{ name: car.addedBy, type: "Osoba prywatna" }} location={car.location} />
+                <SellerInfo seller={seller} location={car.location || "(Brak)"} loggedUser={user} />
+                {/* <SellerInfo seller={{ name: car.addedBy, type: user?.sellerType | "Undefined" }} location={car.location} /> */}
             </div>
             <div className="car-page-description">
                 <h2>Opis</h2>
