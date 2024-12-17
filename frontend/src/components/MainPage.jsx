@@ -11,6 +11,7 @@ const MainPage = () => {
         try {
             const response = await axios.get('http://localhost:3000/backend/cars/main-page');
             setCars(response.data); // Assuming the response contains an array of cars
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching cars:', error);
         }

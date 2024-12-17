@@ -45,7 +45,7 @@ export const addCar = async (req, res) => {
 
 export const getCars = async (req, res) => {
     try {
-        const cars = await Car.find({}).sort({ createdAt: -1 })
+        const cars = await Car.find({ is_active: true }).sort({ createdAt: -1 })
 
         return res.status(200).json(cars)
     } catch (error) {
@@ -88,8 +88,28 @@ export const getCarsAddedby = async (req, res) => {
     try {
         const { addedBy } = req.query;
         const cars = await Car.find({ addedBy });
-        res.json(cars);
+        return res.status(200).json(cars);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch cars.' });
     }
 }
+
+export const changeCarStatus = async (req, res) => {
+    try {
+        const { carId, newStatus } = req.body;
+        const updatedCar = await Car.findByIdAndUpdate(
+            carId,
+            { is_active: newStatus },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).send('Car not found.');
+        }
+
+        res.status(200).send('Car status updated successfully');
+    } catch (err) {
+        console.error('Error updating car status:', err);
+        res.status(500).json({ error: 'Failed to update car status.' });
+    }
+};

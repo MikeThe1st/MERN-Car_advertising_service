@@ -1,6 +1,6 @@
 import express from 'express'
 import { register, login, getUser, getUserInfo } from '../controllers/user.js'
-import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby } from '../controllers/cars.js'
+import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus } from '../controllers/cars.js'
 import multer from 'multer'
 import path from 'path'
 import Car from '../models/Car.js'
@@ -45,6 +45,6 @@ mainRouter.get('/cars/get-cars', getCars)
 mainRouter.get('/cars/main-page', getMainPageCars)
 mainRouter.get('/cars/car/:id', getCarById);
 mainRouter.get('/cars/added-by', getCarsAddedby);
-getCarsAddedby
+mainRouter.post('/cars/status', changeCarStatus)
 
 export default mainRouter
