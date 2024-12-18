@@ -46,7 +46,6 @@ export const addCar = async (req, res) => {
 export const getCars = async (req, res) => {
     try {
         const cars = await Car.find({ is_active: true }).sort({ createdAt: -1 })
-
         return res.status(200).json(cars)
     } catch (error) {
         console.error('Display failed:', error);
@@ -56,7 +55,10 @@ export const getCars = async (req, res) => {
 
 export const getMainPageCars = async (req, res) => {
     try {
-        const randomCars = await Car.aggregate([{ $sample: { size: 6 } }])
+        const randomCars = await Car.aggregate([
+            { $match: { is_active: true } },
+            { $sample: { size: 6 } }
+        ])
 
         return res.status(200).json(randomCars)
     } catch (error) {
