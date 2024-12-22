@@ -118,3 +118,12 @@ export const getUserInfo = async (req, res) => {
         return res.status(500).json({ error: 'Server error.' });
     }
 }
+export const getAllUsers = async (req, res) => {
+    try{
+        const users = await User.find({});
+        return res.status(200).json(users)
+    } catch (error) {
+        console.error('Display failed:', error);
+        return res.status(500).json({ error: 'Display failed.' });
+    }
+}

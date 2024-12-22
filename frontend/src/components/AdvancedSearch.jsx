@@ -20,6 +20,8 @@ const AdvancedSearch = ({ onSearch }) => {
         searchText: '',
         financing: false,
         specialPrograms: '',
+        gearbox:'',
+        
     });
 
     const handleInputChange = (e) => {
@@ -46,6 +48,10 @@ const AdvancedSearch = ({ onSearch }) => {
 
                 <select name="model" value={filters.model} onChange={handleInputChange}>
                     <option value="">Model pojazdu</option>
+                </select>
+
+                <select name="gearbox" value={filters.gearbox} onChange={handleInputChange}>
+                    <option value="">Skrzynia biegów</option>
                 </select>
 
                 <select name="generation" value={filters.generation} onChange={handleInputChange}>

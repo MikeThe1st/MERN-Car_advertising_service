@@ -41,15 +41,11 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <h2>Witaj w panelu administratora</h2>
+            <h2>Witaj w panelu administratora</h2>\
+            
             <p>Zarządzaj użytkownikami, zamówieniami, produktami i ustawieniami systemu.</p>
 
-            {/* Widżety */}
-            <div className="widgets">
-                <div className="widget">Liczba użytkowników: {users.length}</div>
-                <div className="widget">Liczba zamówień: 45</div>
-                <div className="widget">Dochód: 15 000 PLN</div>
-            </div>
+          
 
             {/* Tabela użytkowników */}
             <div className="user-management">

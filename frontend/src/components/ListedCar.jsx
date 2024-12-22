@@ -25,16 +25,14 @@ const ListedCar = ({ car }) => {
     };
     return (
         <Card className="listed-car-card shadow-sm">
-            <Card.Img variant="top" src={`http://localhost:3000/public/` + car?.imgPath} alt={car.name} className="listed-car-image" />
+            <Card.Img variant="top" src={`http://localhost:3000/public/${car?.imgPath}`} alt={car.name} />
             <Card.Body>
-                <Card.Title>{car.brand}</Card.Title>
-                <Card.Title>{car.model}</Card.Title>
-                <Card.Title>{car.price} PLN</Card.Title>
-                <Card.Text>{car.description}</Card.Text>
+                <Card.Title>{car.brand} {car.model}</Card.Title>
+                <Card.Text>Cena: {car.price} PLN</Card.Text>
                 <Button variant="primary" href={`/CarPage?id=${car._id}`}>
                     Zobacz szczegóły
                 </Button>
-                <Button variant="secondary m-1" onClick={toggleCarStatus}>
+                <Button variant="secondary" className="m-1" onClick={toggleCarStatus}>
                     {car.is_active ? 'Usuń ogłoszenie' : 'Przywróć ogłoszenie'}
                 </Button>
             </Card.Body>

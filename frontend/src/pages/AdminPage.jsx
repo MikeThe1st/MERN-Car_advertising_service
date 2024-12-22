@@ -2,6 +2,9 @@
 import React from 'react';
 import Navbar from "../components/Navbar";
 import Dashboard from '../components/Dashboard';
+import AdminPanel from '../components/AdminPanel';
+import DailyCarsChart from '../components/DailyCarsChart';
+import UserList from '../components/UserList';
 import '../css/AdminPage.css';
 
 const AdminPage = () => {
@@ -9,8 +12,10 @@ const AdminPage = () => {
         <div className="admin-page">
           <Navbar/>
             <div className="main-content">
-             
-                <Dashboard />
+                <h1>witaj </h1>
+                <AdminPanel />
+                <DailyCarsChart/>
+                <UserList/>
             </div>
         </div>
     );
