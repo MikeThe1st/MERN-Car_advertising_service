@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema(
         name: { type: String, required: true },
         phoneNumber: { type: String, required: true },
         sellerType: { type: String, required: true },
+        isActive: {type: Boolean, default: true},
+        isAdmin: {type: Boolean, default: false}
     }
 )
 

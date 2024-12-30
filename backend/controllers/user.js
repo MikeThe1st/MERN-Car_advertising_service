@@ -27,6 +27,9 @@ export const login = async (req, res) => {
         if (!loginUser) {
             return res.status(404).json({ msg: 'Please provide valid email and password.' })
         }
+        if (!loginUser.isActive) {
+            return res.status(403).json({ msg: 'Twoje konto jest nieaktywne. Skontaktuj się z administratorem.' });
+        }
 
         const isPasswordCorrect = await bcrypt.compare(password, loginUser.password)
 
@@ -119,7 +122,7 @@ export const getUserInfo = async (req, res) => {
     }
 }
 export const getAllUsers = async (req, res) => {
-    try{
+    try {
         const users = await User.find({});
         return res.status(200).json(users)
     } catch (error) {
@@ -127,3 +130,19 @@ export const getAllUsers = async (req, res) => {
         return res.status(500).json({ error: 'Display failed.' });
     }
 }
+
+export const updateProfile = async (req, res) => {
+    try {
+        const { name, email, phoneNumber, _id } = req.body;
+        const updatedUser = await User.findByIdAndUpdate(_id, {
+            name,
+            email,
+            phoneNumber,
+        }, { new: true });
+
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        console.error("Error updating profile:", err);
+        res.status(500).json({ error: 'Failed to update profile' });
+    }
+};

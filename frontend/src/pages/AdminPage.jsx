@@ -10,12 +10,12 @@ import '../css/AdminPage.css';
 const AdminPage = () => {
     return (
         <div className="admin-page">
-          <Navbar/>
+            <Navbar />
             <div className="main-content">
-                <h1>witaj </h1>
+                <h1 className='pb-2'>Witaj w panelu admina! </h1>
                 <AdminPanel />
-                <DailyCarsChart/>
-                <UserList/>
+                <DailyCarsChart />
+                <UserList />
             </div>
         </div>
     );

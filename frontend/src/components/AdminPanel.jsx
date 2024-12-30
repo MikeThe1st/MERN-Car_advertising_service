@@ -12,7 +12,7 @@ const AdminPanel = () => {
         const fetchCars = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:3000/backend/cars/get-cars');
+                const response = await axios.get('http://localhost:3000/backend/cars/admin');
                 setCars(response.data);
             } catch (err) {
                 console.error("Error fetching car data:", err);
