@@ -3,6 +3,7 @@
 /* Editable Form Styles */
 .editable-form label {
     font-weight: 600;
+
 }
 
 .editable-form input,
@@ -13,12 +14,14 @@
     border: 1px solid #ced4da;
     padding: 0.5rem;
     font-size: 1rem;
+    
 }
 
 .editable-form input:focus,
 .editable-form textarea:focus {
     border-color: #007bff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    
 }
 
 .save-button {
