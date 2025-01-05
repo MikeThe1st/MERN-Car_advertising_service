@@ -25,20 +25,58 @@ const UserList = () => {
         fetchUsers();
     }, []);
 
+    const handleToggleStatus = async (userId, currentStatus) => {
+        try {
+            await axios.post(
+                "http://localhost:3000/backend/admin/toggle-user-status",
+                { userId, isActive: !currentStatus }
+            );
+            if (!currentStatus) {
+                alert("Użytkownik został pomyślnie aktywowany.");
+            } else {
+                alert("Użytkownik został pomyślnie dezaktywowany.");
+            }
+            window.location.reload();
+        } catch (err) {
+            console.error("Błąd podczas zmiany statusu użytkownika:", err);
+            alert("Nie udało się zmienić statusu użytkownika.");
+        }
+    };
+
+    const handleToggleAdmin = async (userId, currentAdminStatus) => {
+        try {
+            console.log(userId, currentAdminStatus)
+            await axios.post(
+                "http://localhost:3000/backend/admin/toggle-permissions",
+                { userId, isAdmin: !currentAdminStatus }
+            );
+            if (!currentAdminStatus) {
+                alert("Użytkownik został pomyślnie dodany jako administrator.");
+            } else {
+                alert("Użytkownik został pomyślnie usunięty z roli administratora.");
+            }
+            window.location.reload();
+        } catch (err) {
+            console.error("Błąd podczas zmiany roli administratora:", err);
+            alert("Nie udało się zmienić roli administratora.");
+        }
+    };
+
     if (loading) return <div className="loading">Ładowanie listy użytkowników...</div>;
     if (error) return <div className="error">{error}</div>;
 
     return (
         <div className="user-list">
             <h2>Lista użytkowników</h2>
-            <Table striped bordered hover responsive>
+            <table className="user-table">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Imię</th>
                         <th>Email</th>
-                        <th>Data utworzenia</th>
+                        <th>Typ konta</th>
                         <th>Status</th>
+                        <th>Administrator</th>
                         <th>Akcja</th>
                     </tr>
                 </thead>
@@ -48,18 +86,27 @@ const UserList = () => {
                             <td>{index + 1}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
-                            <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td>{user.sellerType}</td>
                             <td>{user.isActive ? 'Aktywny' : 'Nieaktywny'}</td>
-                            <td><button
-                            variant={user.isActive ? 'danger' : 'success'}
-                            onClick={()=>handleToggleStatus(user._id,user.isActive) }
-                            >
-                                {user.isActive? 'Aktywny' : 'Nieaktywny'}
-                                </button></td>
+                            <td>{user.isAdmin ? 'Tak' : 'Nie'}</td>
+                            <td>
+                                <button
+                                    className="action-btn m-1"
+                                    onClick={() => handleToggleStatus(user._id, user.isActive)}
+                                >
+                                    {user.isActive ? 'Dezaktywuj' : 'Aktywuj'}
+                                </button>
+                                <button
+                                    className="action-btn m-1"
+                                    onClick={() => handleToggleAdmin(user._id, user.isAdmin)}
+                                >
+                                    {user.isAdmin ? 'Usuń Admina' : 'Dodaj Admina'}
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
-            </Table>
+            </table>
         </div>
     );
 };

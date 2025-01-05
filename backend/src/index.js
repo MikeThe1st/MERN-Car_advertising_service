@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import path from 'path'
-
+import User from '../models/User.js'
 
 import mainRouter from '../routes/main.js'
 
@@ -22,7 +22,6 @@ app.use(cookieParser())
 // app.use('/public', express.static(path.join(path.resolve(), 'public')))
 app.use('/backend', mainRouter)
 
-
 const start = async () => {
     try {
         // Connect to MongoDB
@@ -33,7 +32,6 @@ const start = async () => {
             .catch((error) => {
                 console.error('Error connecting to MongoDB:', error);
             })
-
         app.listen(appPort, () => console.log(`App is running on Port: ${appPort}`))
     } catch (error) {
         console.log(error)

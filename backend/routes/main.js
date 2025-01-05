@@ -1,6 +1,7 @@
 import express from 'express'
-import { register, login, getUser, getUserInfo, getAllUsers } from '../controllers/user.js'
-import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus } from '../controllers/cars.js'
+import { register, login, getUser, getUserInfo, getAllUsers, updateProfile } from '../controllers/user.js'
+import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus, getAdminCars } from '../controllers/cars.js'
+import { changeUserAdmin, changeUserStatus } from '../controllers/admin.js'
 import multer from 'multer'
 import path from 'path'
 import Car from '../models/Car.js'
@@ -40,6 +41,7 @@ mainRouter.post('/user/login', login)
 mainRouter.get('/user/get-user', getUser)
 mainRouter.get('/user/info', getUserInfo)
 mainRouter.get('/user/get-all-users', getAllUsers)
+mainRouter.post('/user/update-profile', updateProfile)
 
 mainRouter.post('/cars/add-new', upload.single('image'), addCar)
 mainRouter.get('/cars/get-cars', getCars)
@@ -47,5 +49,9 @@ mainRouter.get('/cars/main-page', getMainPageCars)
 mainRouter.get('/cars/car/:id', getCarById);
 mainRouter.get('/cars/added-by', getCarsAddedby);
 mainRouter.post('/cars/status', changeCarStatus)
+mainRouter.get('/cars/admin', getAdminCars)
+
+mainRouter.post('/admin/toggle-user-status', changeUserStatus)
+mainRouter.post('/admin/toggle-permissions', changeUserAdmin)
 
 export default mainRouter

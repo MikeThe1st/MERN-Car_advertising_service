@@ -14,7 +14,6 @@ import AboutUs from "./pages/AboutUs.jsx";
 import BuyCar from "./pages/BuyCar.jsx";
 import CarPage from "./pages/CarPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
-import MessPage from "./pages/MessPage.jsx";
 function App() {
 
 	return (
@@ -31,8 +30,12 @@ function App() {
 					<Route element={<AboutUs />} path="/AboutUs" />
 					<Route element={<BuyCar />} path="/BuyCar" />
 					<Route element={<CarPage />} path="/CarPage" />
-					<Route element={<AdminPage />} path="/AdminPage" />
 					<Route element={<MessPage />} path="/MessPage" />
+					
+					<Route element={<AdminRoutes />}>
+						<Route element={<AdminPage />} path="/AdminPage" />
+
+					</Route>
 				</Routes>
 			</BrowserRouter>
 		</>

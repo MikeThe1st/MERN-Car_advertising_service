@@ -105,7 +105,7 @@ const Navbar = () => {
 									<button
 										className="btn btn-info text-white"
 										onClick={() =>
-											(window.location.href = `/profile`)
+											window.location.href = user?.isAdmin ? '/adminPage' : '/profile'
 										}
 									>
 										{user?.email}

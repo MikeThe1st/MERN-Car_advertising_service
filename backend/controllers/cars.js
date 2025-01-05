@@ -115,3 +115,13 @@ export const changeCarStatus = async (req, res) => {
         res.status(500).json({ error: 'Failed to update car status.' });
     }
 };
+
+export const getAdminCars = async (req, res) => {
+    try {
+        const cars = await Car.find({}).sort({ createdAt: -1 })
+        return res.status(200).json(cars)
+    } catch (error) {
+        console.error('Display failed:', error);
+        return res.status(500).json({ error: 'Display failed.' });
+    }
+}
