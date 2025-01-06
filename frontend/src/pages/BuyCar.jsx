@@ -5,7 +5,7 @@ import CarCard from '../components/CarCard';
 import '../css/BuyCar.css';
 import Navbar from '../components/Navbar';
 import AdvancedSearch from "../components/AdvancedSearch";
-import SearchBar from '../components/SearchBar';
+
 import axios from 'axios';
 
 const BuyCar = () => {
@@ -39,7 +39,7 @@ const BuyCar = () => {
         <div className="buy-car-page buy-car-body">
             <Navbar />
             <AdvancedSearch />
-            <SearchBar />
+           
             <div className="car-list">
                 {cars.map((car) => (
                     <CarCard key={car._id} car={car} />

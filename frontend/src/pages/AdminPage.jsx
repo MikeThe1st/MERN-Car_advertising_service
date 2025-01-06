@@ -6,6 +6,8 @@ import AdminPanel from '../components/AdminPanel';
 import DailyCarsChart from '../components/DailyCarsChart';
 import UserList from '../components/UserList';
 import '../css/AdminPage.css';
+import GearboxCarsChart from '../components/GearboxCarsChart';
+import YearlyCarsChart from '../components/YearlyCarsChart';
 
 const AdminPage = () => {
     return (
@@ -16,6 +18,8 @@ const AdminPage = () => {
                 <AdminPanel />
                 <DailyCarsChart />
                 <UserList />
+                <GearboxCarsChart/>
+             
             </div>
         </div>
     );

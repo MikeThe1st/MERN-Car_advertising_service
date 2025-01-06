@@ -1,0 +1,57 @@
+.gearbox-cars-chart {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+   
+}
+
+.gearbox-cars-chart h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+    
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 400px; /* Możesz dostosować wysokość wykresu */
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.chart-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    margin: 0 10px;
+    
+}
+
+.bar {
+    width: 100%;
+    background-color: #4caf50; /* Kolor słupków */
+    border-radius: 4px;
+    transition: height 0.3s ease;
+    position: relative;
+    
+}
+
+.bar[data-value="0"] {
+    background-color: #e0e0e0; /* Kolor dla wartości 0 */
+}
+
+.label {
+    margin-top: 8px;
+    font-size: 1rem;
+    color: #333;
+    
+}

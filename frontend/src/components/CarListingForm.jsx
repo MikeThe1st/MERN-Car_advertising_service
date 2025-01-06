@@ -19,8 +19,35 @@ const CarListingForm = ({ email }) => {
         price: '',
         is_damaged: false,
         image: null,
-        addedBy: email
+        addedBy: email,
     });
+
+    const [errors, setErrors] = useState({});
+    const brandModels = {
+        Mercedes: ["A-Class", "C-Class", "E-Class", "S-Class", "GLA"],
+        BMW: ["1 Series", "3 Series", "5 Series", "7 Series", "X5"],
+        Audi: ["A3", "A4", "A6", "Q5", "Q7"],
+        Volkswagen: ["Golf", "Passat", "Tiguan", "Polo", "Arteon"],
+        Toyota: ["Corolla", "Camry", "RAV4", "Yaris", "Hilux"],
+        Honda: ["Civic", "Accord", "CR-V", "Jazz", "HR-V"],
+        Ford: ["Fiesta", "Focus", "Mondeo", "Mustang", "Kuga"],
+        Chevrolet: ["Spark", "Malibu", "Equinox", "Tahoe", "Traverse"],
+        Nissan: ["Micra", "Qashqai", "X-Trail", "Juke", "Navara"],
+        Hyundai: ["i10", "i20", "i30", "Tucson", "Santa Fe"],
+        Kia: ["Rio", "Ceed", "Sportage", "Sorento", "Picanto"],
+        Mazda: ["Mazda2", "Mazda3", "Mazda6", "CX-5", "CX-30"],
+        Renault: ["Clio", "Megane", "Kadjar", "Talisman", "Captur"],
+        Peugeot: ["208", "308", "508", "2008", "3008"],
+        Fiat: ["500", "Panda", "Tipo", "Doblo", "Punto"],
+        Volvo: ["XC40", "XC60", "XC90", "S60", "V60"],
+        Opel: ["Corsa", "Astra", "Insignia", "Crossland", "Mokka"],
+        Jeep: ["Renegade", "Compass", "Wrangler", "Cherokee", "Grand Cherokee"],
+        Subaru: ["Impreza", "Outback", "Forester", "XV", "Legacy"],
+        Skoda: ["Octavia", "Superb", "Fabia", "Kodiaq", "Kamiq"],
+        Seat: ["Ibiza", "Leon", "Arona", "Ateca", "Tarraco"],
+        Suzuki: ["Swift", "Vitara", "Jimny", "Baleno", "SX4"],
+    };
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,6 +55,13 @@ const CarListingForm = ({ email }) => {
             ...prevData,
             [name]: value,
         }));
+
+        if (name === 'brand') {
+            setCarData((prevData) => ({
+                ...prevData,
+                model: '', // Reset model if brand changes
+            }));
+        }
     };
 
     const handleToggleChange = (e) => {
@@ -45,8 +79,55 @@ const CarListingForm = ({ email }) => {
         }));
     };
 
+    const validateFields = () => {
+        const newErrors = {};
+
+        if (!carData.productionYear || carData.productionYear < 1885 ) {
+            newErrors.productionYear = "Rok produkcji musi być większy niż 1885.";
+        }
+
+        if (!carData.mileage || carData.mileage < 0) {
+            newErrors.mileage = "Przebieg nie może być ujemny.";
+        }
+
+        if (!carData.horsePower || carData.horsePower < 0) {
+            newErrors.horsePower = "Moc silnika nie może być ujemna.";
+        }
+
+        if (!carData.price || carData.price < 0) {
+            newErrors.price = "Cena nie może być ujemna.";
+        }
+
+        if (!carData.color) {
+            newErrors.color = "Kolor jest wymagany.";
+        }
+
+        if (!carData.fuel) {
+            newErrors.fuel = "Rodzaj paliwa jest wymagany.";
+        }
+
+        if (!carData.gearbox) {
+            newErrors.gearbox = "Skrzynia biegów jest wymagana.";
+        }
+
+        if (!carData.location) {
+            newErrors.location = "Lokalizacja jest wymagana.";
+        }
+
+        if (!carData.description) {
+            newErrors.description = "Opis jest wymagany.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateFields()) {
+            return;
+        }
 
         const formData = new FormData();
         for (let key in carData) {
@@ -61,11 +142,10 @@ const CarListingForm = ({ email }) => {
             });
 
             if (response.status === 201) {
-                console.log('Car added successfully', response.data);
                 alert("Dodano ogłoszenie.");
                 window.location.href = '/profile';
             } else {
-                console.log('Failed to add car');
+                console.error('Failed to add car');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -88,6 +168,7 @@ const CarListingForm = ({ email }) => {
             is_damaged: false,
             image: null,
         });
+        setErrors({});
     };
 
     return (
@@ -98,27 +179,39 @@ const CarListingForm = ({ email }) => {
                     <Col md={4}>
                         <Form.Group controlId="formBrand">
                             <Form.Label>Marka</Form.Label>
-                            <Form.Control
-                                type="text"
+                            <Form.Select
                                 name="brand"
                                 value={carData.brand}
                                 onChange={handleChange}
-                                placeholder="Marka"
                                 required
-                            />
+                            >
+                                <option value="">Wybierz markę</option>
+                                {Object.keys(brandModels).map((brand) => (
+                                    <option key={brand} value={brand}>
+                                        {brand}
+                                    </option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
                         <Form.Group controlId="formModel">
                             <Form.Label>Model</Form.Label>
-                            <Form.Control
-                                type="text"
+                            <Form.Select
                                 name="model"
                                 value={carData.model}
                                 onChange={handleChange}
-                                placeholder="Model"
                                 required
-                            />
+                                disabled={!carData.brand}
+                            >
+                                <option value="">Wybierz model</option>
+                                {carData.brand &&
+                                    brandModels[carData.brand].map((model) => (
+                                        <option key={model} value={model}>
+                                            {model}
+                                        </option>
+                                    ))}
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
@@ -131,25 +224,16 @@ const CarListingForm = ({ email }) => {
                                 onChange={handleChange}
                                 placeholder="Rok"
                                 required
+                                isInvalid={!!errors.productionYear}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.productionYear}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
 
                 <Row className="mb-3">
-                    <Col md={4}>
-                        <Form.Group controlId="formHorsePower">
-                            <Form.Label>Moc silnika (KM)</Form.Label>
-                            <Form.Control
-                                type="number"
-                                name="horsePower"
-                                value={carData.horsePower}
-                                onChange={handleChange}
-                                placeholder="Moc"
-                                required
-                            />
-                        </Form.Group>
-                    </Col>
                     <Col md={4}>
                         <Form.Group controlId="formMileage">
                             <Form.Label>Przebieg (km)</Form.Label>
@@ -160,61 +244,28 @@ const CarListingForm = ({ email }) => {
                                 onChange={handleChange}
                                 placeholder="Przebieg"
                                 required
+                                isInvalid={!!errors.mileage}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.mileage}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
-                        <Form.Group controlId="formColor">
-                            <Form.Label>Kolor</Form.Label>
-                            <Form.Select
-                                name="color"
-                                value={carData.color}
+                        <Form.Group controlId="formHorsePower">
+                            <Form.Label>Moc silnika (KM)</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="horsePower"
+                                value={carData.horsePower}
                                 onChange={handleChange}
+                                placeholder="KM"
                                 required
-                            >
-                                <option value="">Wybierz kolor</option>
-                                <option value="Czarny">Czarny</option>
-                                <option value="Biały">Biały</option>
-                                <option value="Niebieski">Niebieski</option>
-                                <option value="Zielony">Zielony</option>
-                                <option value="Żółty">Żółty</option>
-                                <option value="Czerwony">Czerwony</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-                </Row>
-
-                <Row className="mb-3">
-                    <Col md={4}>
-                        <Form.Group controlId="formFuel">
-                            <Form.Label>Rodzaj paliwa</Form.Label>
-                            <Form.Select
-                                name="fuel"
-                                value={carData.fuel}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Wybierz rodzaj paliwa</option>
-                                <option value="Benzyna">Benzyna</option>
-                                <option value="Diesel">Diesel</option>
-                                <option value="Hybryda">Hybryda</option>
-                                <option value="Elektryczny">Elektryczny</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                        <Form.Group controlId="formGearbox">
-                            <Form.Label>Skrzynia biegów</Form.Label>
-                            <Form.Select
-                                name="gearbox"
-                                value={carData.gearbox}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Wybierz skrzynię biegów</option>
-                                <option value="Manualna">Manualna</option>
-                                <option value="Automatyczna">Automatyczna</option>
-                            </Form.Select>
+                                isInvalid={!!errors.horsePower}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.horsePower}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
@@ -227,28 +278,108 @@ const CarListingForm = ({ email }) => {
                                 onChange={handleChange}
                                 placeholder="Cena"
                                 required
+                                isInvalid={!!errors.price}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.price}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
+
                 <Row className="mb-3">
                     <Col md={4}>
+                        <Form.Group controlId="formColor">
+                            <Form.Label>Kolor</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="color"
+                                value={carData.color}
+                                onChange={handleChange}
+                                placeholder="Kolor"
+                                required
+                                isInvalid={!!errors.color}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.color}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group controlId="formFuel">
+                            <Form.Label>Paliwo</Form.Label>
+                            <Form.Select
+                                name="fuel"
+                                value={carData.fuel}
+                                onChange={handleChange}
+                                required
+                                isInvalid={!!errors.fuel}
+                            >
+                                <option value="">Wybierz rodzaj paliwa</option>
+                                <option value="Petrol">Benzyna</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Electric">Elektryczny</option>
+                                <option value="Hybrid">Hybrida</option>
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.fuel}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group controlId="formGearbox">
+                            <Form.Label>Skrzynia biegów</Form.Label>
+                            <Form.Select
+                                name="gearbox"
+                                value={carData.gearbox}
+                                onChange={handleChange}
+                                required
+                                isInvalid={!!errors.gearbox}
+                            >
+                                <option value="">Wybierz skrzynię biegów</option>
+                                <option value="Manual">Manualna</option>
+                                <option value="Automatic">Automatyczna</option>
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.gearbox}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                <Row className="mb-3">
+                    <Col md={6}>
                         <Form.Group controlId="formLocation">
                             <Form.Label>Lokalizacja</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="location"
-                                value={carData.location || ''} // Ensure backward compatibility
+                                value={carData.location}
                                 onChange={handleChange}
-                                placeholder="Podaj miasto"
+                                placeholder="Lokalizacja"
                                 required
+                                isInvalid={!!errors.location}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.location}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group controlId="formImage">
+                            <Form.Label>Zdjęcie pojazdu</Form.Label>
+                            <Form.Control
+                                type="file"
+                                name="image"
+                                onChange={handleImageChange}
+                                accept="image/*"
                             />
                         </Form.Group>
                     </Col>
                 </Row>
 
                 <Row className="mb-3">
-                    <Col md={8}>
+                    <Col md={12}>
                         <Form.Group controlId="formDescription">
                             <Form.Label>Opis</Form.Label>
                             <Form.Control
@@ -256,44 +387,42 @@ const CarListingForm = ({ email }) => {
                                 name="description"
                                 value={carData.description}
                                 onChange={handleChange}
-                                placeholder="Opisz samochód"
-                                rows={3}
+                                placeholder="Dodaj opis samochodu"
+                                rows={4}
                                 required
+                                isInvalid={!!errors.description}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.description}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
-                    <Col md={4}>
+                </Row>
+
+                <Row className="mb-3">
+                    <Col md={6}>
                         <Form.Group controlId="formIsDamaged">
-                            <Form.Label>Czy uszkodzony?</Form.Label>
                             <Form.Check
                                 type="checkbox"
                                 name="is_damaged"
+                                label="Pojazd uszkodzony"
                                 checked={carData.is_damaged}
                                 onChange={handleToggleChange}
-                                label="Uszkodzony"
                             />
                         </Form.Group>
                     </Col>
                 </Row>
 
-                <Form.Group className="mb-3" controlId="formImage">
-                    <Form.Label>Zdjęcie samochodu</Form.Label>
-                    <Form.Control
-                        type="file"
-                        name="image"
-                        onChange={handleImageChange}
-                        accept=".png, .jpg, .jpeg"
-                    />
-                </Form.Group>
-
-                <div className="text-center">
-                    <Button variant="primary" type="submit" className="me-3">
-                        Dodaj samochód
-                    </Button>
-                    <Button variant="secondary" type="button" onClick={handleClear}>
-                        Anuluj
-                    </Button>
-                </div>
+                <Row className="mb-3">
+                    <Col className="text-center">
+                        <Button type="submit" variant="primary" className="me-2">
+                            Dodaj ogłoszenie
+                        </Button>
+                        <Button type="button" variant="secondary" onClick={handleClear}>
+                            Wyczyść
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
         </Card>
     );

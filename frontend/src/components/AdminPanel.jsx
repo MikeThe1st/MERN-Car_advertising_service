@@ -73,7 +73,7 @@ const AdminPanel = () => {
                                     variant={car.is_active ? 'danger' : 'success'}
                                     onClick={() => handleToggleStatus(car._id, car.is_active)}
                                 >
-                                    {car.is_active ? 'Deactivate' : 'Activate'}
+                                    {car.is_active ? 'Nieaktywny' : 'Aktywny'}
                                 </Button>
                             </td>
                         </tr>

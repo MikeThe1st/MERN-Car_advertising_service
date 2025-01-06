@@ -1,0 +1,77 @@
+.yearly-cars-chart {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.yearly-cars-chart h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 400px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    position: relative;
+}
+
+.chart-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    margin: 0 5px;
+}
+
+.bar {
+    width: 100%;
+    background-color: #4caf50;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s ease, background-color 0.3s ease;
+}
+
+.bar:hover {
+    background-color: #388e3c;
+}
+
+.bar[data-value]:after {
+    content: attr(data-value);
+    position: absolute;
+    top: -20px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.label {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+
+    .bar {
+        width: 30px;
+    }
+
+    .label {
+        font-size: 0.8rem;
+    }
+}

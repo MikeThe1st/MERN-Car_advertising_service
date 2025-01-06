@@ -8,14 +8,39 @@ const EditableProfileForm = ({ initialData, onSave }) => {
     const [formData, setFormData] = useState(initialData);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        setValidationErrors({ ...validationErrors, [name]: null }); // Reset specific field error on change
+    };
+
+    const validate = () => {
+        let isValid = true;
+        const errors = {};
+
+        if (!formData.email.includes("@")) {
+            errors.email = "Email musi zawierać znak '@'.";
+            isValid = false;
+        }
+
+        if (formData.phoneNumber.length < 9) {
+            errors.phoneNumber = "Numer telefonu musi mieć co najmniej 9 znaków.";
+            isValid = false;
+        }
+
+        setValidationErrors(errors);
+        return isValid;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validate()) {
+            return;
+        }
+
         setLoading(true);
         try {
             // Send updated data to backend (POST request)
@@ -53,17 +78,25 @@ const EditableProfileForm = ({ initialData, onSave }) => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
+                        isInvalid={!!validationErrors.email}
                     />
+                    {validationErrors.email && (
+                        <Form.Text className="text-danger">{validationErrors.email}</Form.Text>
+                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                     <Form.Label>Telefon</Form.Label>
                     <Form.Control
                         type="text"
-                        name="phoneNumber"  // Use "phoneNumber" to match the state property
-                        value={formData.phoneNumber} // Bind it to the correct property in the state
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
                         onChange={handleChange}
+                        isInvalid={!!validationErrors.phoneNumber}
                     />
+                    {validationErrors.phoneNumber && (
+                        <Form.Text className="text-danger">{validationErrors.phoneNumber}</Form.Text>
+                    )}
                 </Form.Group>
 
                 <Button variant="primary" type="submit" disabled={loading}>
@@ -72,6 +105,6 @@ const EditableProfileForm = ({ initialData, onSave }) => {
             </Form>
         </div>
     );
-}
+};
 
 export default EditableProfileForm;

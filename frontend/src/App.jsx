@@ -14,6 +14,9 @@ import AboutUs from "./pages/AboutUs.jsx";
 import BuyCar from "./pages/BuyCar.jsx";
 import CarPage from "./pages/CarPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
+import MessPage from './pages/MessPage.jsx'
+import AdminRoutes from "./AdminRoutes.jsx";
+
 function App() {
 
 	return (
