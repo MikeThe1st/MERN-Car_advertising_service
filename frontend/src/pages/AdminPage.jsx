@@ -16,10 +16,10 @@ const AdminPage = () => {
             <div className="main-content">
                 <h1 className='pb-2'>Witaj w panelu admina! </h1>
                 <AdminPanel />
-                <DailyCarsChart />
                 <UserList />
-                <GearboxCarsChart/>
-             
+                <DailyCarsChart />
+                <GearboxCarsChart />
+
             </div>
         </div>
     );

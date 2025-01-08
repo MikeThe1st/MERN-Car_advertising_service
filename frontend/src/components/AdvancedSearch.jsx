@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "../css/AdvancedSearch.css";
 
-const AdvancedSearch = ({ onSearch }) => {
+import axios from "axios";
+
+const AdvancedSearch = ({ onSearch, cars, setCars }) => {
 	const [filters, setFilters] = useState({
 		brand: "",
 		model: "",
-		generation: "",
-		bodyType: "",
+		gearbox: "",
 		minPrice: "",
 		maxPrice: "",
 		minYear: "",
@@ -15,16 +16,14 @@ const AdvancedSearch = ({ onSearch }) => {
 		minMileage: "",
 		maxMileage: "",
 		location: "",
-		damageStatus: "",
-		searchText: "",
-		financing: false,
-		specialPrograms: "",
-		gearbox: "",
+		is_damaged: '',
+		minHorsePower: '',
+		maxHorsePower: '',
 	});
 
 	const [models, setModels] = useState([]);
 
-	
+
 	const brandModels = {
 		Mercedes: ["A-Class", "C-Class", "E-Class", "S-Class", "GLA"],
 		BMW: ["1 Series", "3 Series", "5 Series", "7 Series", "X5"],
@@ -69,9 +68,22 @@ const AdvancedSearch = ({ onSearch }) => {
 		}));
 	};
 
-	const handleSearch = (e) => {
+	const handleSearch = async (e) => {
 		e.preventDefault();
-		onSearch(filters); // Przekazujemy filtry do komponentu nadrzędnego
+		console.log(filters)
+		e.preventDefault();
+
+		try {
+			const response = await axios.post("http://localhost:3000/backend/cars/search", filters);
+
+			if (response.status === 200) {
+				setCars(response.data); // Update the cars state with the fetched data
+			} else {
+				console.error("Search failed:", response.statusText);
+			}
+		} catch (error) {
+			console.error("Error fetching cars:", error);
+		}
 	};
 
 	return (
@@ -100,7 +112,6 @@ const AdvancedSearch = ({ onSearch }) => {
 					))}
 				</select>
 
-				{/* Pozostałe pola formularza */}
 				<select
 					name="gearbox"
 					value={filters.gearbox}
@@ -109,57 +120,6 @@ const AdvancedSearch = ({ onSearch }) => {
 					<option value="">Skrzynia biegów</option>
 					<option value="Manualna">Manualna</option>
 					<option value="Automatyczna">Automatyczna</option>
-					<option value="Półautomatyczna">Półautomatyczna</option>
-					<option value="Dwusprzęgłowa">Dwusprzęgłowa</option>
-					<option value="CVT">CVT (bezstopniowa)</option>
-					<option value="Tiptronic">Tiptronic</option>
-					<option value="Sekwencyjna">Sekwencyjna</option>
-				</select>
-
-				<select
-					name="generation"
-					value={filters.generation}
-					onChange={handleInputChange}
-				>
-					<option value="">Generacja</option>
-					<option value="I">I</option>
-					<option value="II">II</option>
-					<option value="III">III</option>
-					<option value="IV">IV</option>
-					<option value="V">V</option>
-					<option value="VI">VI</option>
-					<option value="VII">VII</option>
-					<option value="VIII">VIII</option>
-					<option value="IX">IX</option>
-					<option value="X">X</option>
-					<option value="Inna">Inna</option>
-				</select>
-
-				<select
-					name="bodyType"
-					value={filters.bodyType}
-					onChange={handleInputChange}
-				>
-					<option value="">Typ nadwozia</option>
-					<option value="SUV">SUV</option>
-					<option value="Sedan">Sedan</option>
-					<option value="Kombi">Kombi</option>
-					<option value="Hatchback">Hatchback</option>
-					<option value="Coupe">Coupe</option>
-					<option value="Cabrio">Cabrio</option>
-					<option value="Pickup">Pickup</option>
-					<option value="Van">Van</option>
-					<option value="Minivan">Minivan</option>
-					<option value="Terenowy">Terenowy</option>
-					<option value="Liftback">Liftback</option>
-					<option value="Roadster">Roadster</option>
-					<option value="Limuzyna">Limuzyna</option>
-					<option value="Microcar">Microcar</option>
-					<option value="Fastback">Fastback</option>
-					<option value="Crossover">Crossover</option>
-					<option value="Sportowy">Sportowy</option>
-					<option value="Dostawczy">Dostawczy</option>
-					<option value="Inne">Inne</option>
 				</select>
 
 				<input
@@ -200,6 +160,8 @@ const AdvancedSearch = ({ onSearch }) => {
 					<option value="">Rodzaj paliwa</option>
 					<option value="Benzyna">Benzyna</option>
 					<option value="Diesel">Diesel</option>
+					<option value="Hybryda">Hybryda</option>
+					<option value="Elektryczny">Elektryczny</option>
 				</select>
 
 				<input
@@ -224,15 +186,28 @@ const AdvancedSearch = ({ onSearch }) => {
 					value={filters.location}
 					onChange={handleInputChange}
 				/>
-
+				<input
+					type="number"
+					name="minHorsePower"
+					placeholder="Min moc (KM)"
+					value={filters.minHorsePower}
+					onChange={handleInputChange}
+				/>
+				<input
+					type="number"
+					name="maxHorsePower"
+					placeholder="Max moc (KM)"
+					value={filters.maxHorsePower}
+					onChange={handleInputChange}
+				/>
 				<select
-					name="damageStatus"
-					value={filters.damageStatus}
+					name="is_damaged"
+					value={filters.is_damaged}
 					onChange={handleInputChange}
 				>
-					<option value="">Stan uszkodzeń</option>
-					<option value="Nieuszkodzony">Nieuszkodzony</option>
-					<option value="Uszkodzony">Uszkodzony</option>
+					<option value="">Stan uszkodzenia</option>
+					<option value="true">Uszkodzony</option>
+					<option value="false">Nieuszkodzony</option>
 				</select>
 				<button type="submit" className="search-button">
 					Szukaj

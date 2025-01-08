@@ -77,7 +77,7 @@ const UserList = () => {
                         <th>Typ konta</th>
                         <th>Status</th>
                         <th>Administrator</th>
-                        <th>Akcja</th>
+                        <th>Akcje</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,7 +94,7 @@ const UserList = () => {
                                     className="action-btn m-1"
                                     onClick={() => handleToggleStatus(user._id, user.isActive)}
                                 >
-                                    {user.isActive ? 'Dezaktywuj' : 'Aktywuj'}
+                                    {user.isActive ? 'Dezaktywuj konto' : 'Aktywuj konto'}
                                 </button>
                                 <button
                                     className="action-btn m-1"

@@ -1,6 +1,6 @@
 import express from 'express'
 import { register, login, getUser, getUserInfo, getAllUsers, updateProfile } from '../controllers/user.js'
-import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus, getAdminCars } from '../controllers/cars.js'
+import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus, getAdminCars, searchCars } from '../controllers/cars.js'
 import { changeUserAdmin, changeUserStatus } from '../controllers/admin.js'
 import multer from 'multer'
 import path from 'path'
@@ -50,6 +50,7 @@ mainRouter.get('/cars/car/:id', getCarById);
 mainRouter.get('/cars/added-by', getCarsAddedby);
 mainRouter.post('/cars/status', changeCarStatus)
 mainRouter.get('/cars/admin', getAdminCars)
+mainRouter.post('/cars/search', searchCars)
 
 mainRouter.post('/admin/toggle-user-status', changeUserStatus)
 mainRouter.post('/admin/toggle-permissions', changeUserAdmin)

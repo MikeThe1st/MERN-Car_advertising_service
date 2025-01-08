@@ -38,12 +38,16 @@ const BuyCar = () => {
     return (
         <div className="buy-car-page buy-car-body">
             <Navbar />
-            <AdvancedSearch />
-           
+            <AdvancedSearch cars={cars} setCars={setCars} />
+
             <div className="car-list">
-                {cars.map((car) => (
-                    <CarCard key={car._id} car={car} />
-                ))}
+                {cars.length > 0 ? (
+                    cars.map((car) => (
+                        <CarCard key={car._id} car={car} />
+                    ))
+                ) : (
+                    <div className="no-cars-announcement">Brak samochodów spełniających wymagania</div>
+                )}
             </div>
         </div>
     );

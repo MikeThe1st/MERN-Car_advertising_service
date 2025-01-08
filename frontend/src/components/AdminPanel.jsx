@@ -53,11 +53,11 @@ const AdminPanel = () => {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Brand</th>
+                        <th>Marka</th>
                         <th>Model</th>
-                        <th>Price</th>
+                        <th>Cena</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th>Akcje</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@ const AdminPanel = () => {
                                     variant={car.is_active ? 'danger' : 'success'}
                                     onClick={() => handleToggleStatus(car._id, car.is_active)}
                                 >
-                                    {car.is_active ? 'Nieaktywny' : 'Aktywny'}
+                                    {car.is_active ? 'Dezaktywuj' : 'Aktywuj'}
                                 </Button>
                             </td>
                         </tr>

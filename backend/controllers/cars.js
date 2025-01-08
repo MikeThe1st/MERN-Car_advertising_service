@@ -125,3 +125,38 @@ export const getAdminCars = async (req, res) => {
         return res.status(500).json({ error: 'Display failed.' });
     }
 }
+
+export const searchCars = async (req, res) => {
+    try {
+        const filters = req.body;
+        filters.is_active = true;
+        if (filters.fuelType) {
+            filters.fuel = filters.fuelType;
+            delete filters.fuelType;
+        }
+
+        // Build the query object dynamically
+        const query = {};
+        for (const [key, value] of Object.entries(filters)) {
+            if (value !== '') {
+                if (key === 'minPrice') query.price = { ...query.price, $gte: value };
+                else if (key === 'maxPrice') query.price = { ...query.price, $lte: value };
+                else if (key === 'minYear') query.year = { ...query.year, $gte: value };
+                else if (key === 'maxYear') query.year = { ...query.year, $lte: value };
+                else if (key === 'minMileage') query.mileage = { ...query.mileage, $gte: value };
+                else if (key === 'maxMileage') query.mileage = { ...query.mileage, $lte: value };
+                else if (key === 'minHorsePower') query.horsePower = { ...query.horsePower, $gte: value };
+                else if (key === 'maxHorsePower') query.horsePower = { ...query.horsePower, $lte: value };
+                else if (key === 'is_damaged') query.is_damaged = value === 'true' ? true : false;
+                else query[key] = value;
+            }
+        }
+
+        // Perform the search with the dynamically built query
+        const cars = await Car.find(query);
+
+        return res.status(200).json(cars);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch cars." });
+    }
+};

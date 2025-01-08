@@ -1,6 +1,8 @@
 /* src/css/BuyCar.css */
 .buy-car-page {
     background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
 }
 
 .buy-car-page h2 {
@@ -47,7 +49,8 @@ body, html {
 }
 
 .buy-car-body {
-    padding-top: 300px; /* Dostosuj do wysokości navbaru */
+    /* min-padding-top: 200px; */
+    padding-top: 4rem; 
 }
 
 .full-width-container {
@@ -62,8 +65,20 @@ body, html {
 
 .car-list {
     width: 100%;
+    height: 100vh;
     padding: 0;
     margin-top: 25px; /* Dodaj margines nad listą, aby odsunąć ją od navbaru */
     box-sizing: border-box;
 }
 /* .buy-car-page{margin-top: 100px;} */
+
+.no-cars-announcement {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin: 20px 0;
+}
