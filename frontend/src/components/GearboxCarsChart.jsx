@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/GearboxCarsChart.css';
 
@@ -6,7 +6,6 @@ const GearboxCarsChart = () => {
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const chartContainerRef = useRef(null);
 
     useEffect(() => {
         const fetchCarData = async () => {
@@ -21,14 +20,15 @@ const GearboxCarsChart = () => {
                     return acc;
                 }, {});
 
-                // Tworzenie danych do wykresu
-                const labels = Object.keys(carsByGearbox).sort(); // Posortowane typy skrzyni biegów
-                const data = labels.map((gearbox) => carsByGearbox[gearbox]);
+                // Tworzenie danych do kafelków
+                const formattedData = Object.entries(carsByGearbox).sort(([a], [b]) =>
+                    a.localeCompare(b)
+                );
 
-                setChartData({ labels, data });
+                setChartData(formattedData);
             } catch (err) {
                 console.error('Error fetching car data:', err);
-                setError('Nie udało się załadować danych do wykresu.');
+                setError('Nie udało się załadować danych.');
             } finally {
                 setLoading(false);
             }
@@ -40,26 +40,14 @@ const GearboxCarsChart = () => {
     if (loading) return <p>Ładowanie danych...</p>;
     if (error) return <p>{error}</p>;
 
-    // Dynamika wykresu - dostosowanie skali wysokości słupków
-    const maxValue = Math.max(...chartData.data, 6); // Ustawiamy minimum jako 6
-    const chartContainerHeight = chartContainerRef.current?.offsetHeight || 400; // Wysokość kontenera wykresu
-    const maxHeightForBars = chartContainerHeight * 0.6; // Maksymalna wysokość słupków (60% dostępnej przestrzeni)
-    const chartHeightMultiplier = maxHeightForBars / maxValue; // Proporcjonalne dopasowanie wysokości słupków
-
     return (
         <div className="gearbox-cars-chart">
             <h3>Ilość samochodów według typu skrzyni biegów</h3>
-            <div className="chart-container" ref={chartContainerRef}>
-                {chartData.labels.map((label, index) => (
-                    <div className="chart-bar" key={label}>
-                        <div
-                            className="bar"
-                            style={{
-                                height: `${chartData.data[index] * chartHeightMultiplier}px`,
-                            }}
-                            data-value={chartData.data[index]}
-                        ></div>
-                        <div className="label">{label}</div>
+            <div className="tiles-container">
+                {chartData.map(([gearbox, count]) => (
+                    <div className="tile" key={gearbox}>
+                        <h4 className="tile-label">{gearbox}</h4>
+                        <p className="tile-count">{count}</p>
                     </div>
                 ))}
             </div>

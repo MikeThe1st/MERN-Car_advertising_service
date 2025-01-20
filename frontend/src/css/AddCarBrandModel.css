@@ -1,0 +1,68 @@
+/* Styl ogólny dla komponentu - zajmuje całą szerokość strony */
+.add-car-brand-model {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px; /* Ustalamy maksymalną szerokość, aby nie rozciągało się za szeroko */
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin-top: 20px;
+  }
+  
+  /* Tytuł */
+  .add-car-brand-model h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Etykiety formularza */
+  .add-car-brand-model label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  /* Pola formularza */
+  .add-car-brand-model input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .add-car-brand-model input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  }
+  
+  /* Przycisk */
+  .add-car-brand-model button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-car-brand-model button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .add-car-brand-model button:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  

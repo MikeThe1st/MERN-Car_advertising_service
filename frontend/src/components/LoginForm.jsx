@@ -66,7 +66,7 @@ const LoginForm = () => {
                     </div>
                     <button type="submit" className="btn btn-primary">Zaloguj się</button>
                     <div className="form-footer">
-                        <a href="#" className="text-secondary">Nie pamiętasz hasła?</a>
+                        <a href="/PasswordPage" className="text-secondary">Nie pamiętasz hasła?</a>
                     </div>
                 </form>
                 <div className="text-secondary">

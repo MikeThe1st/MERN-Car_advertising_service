@@ -16,7 +16,7 @@ import CarPage from "./pages/CarPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import MessPage from './pages/MessPage.jsx'
 import AdminRoutes from "./AdminRoutes.jsx";
-
+import PasswordPage from "./pages/PasswordPage.jsx";
 function App() {
 
 	return (
@@ -34,6 +34,7 @@ function App() {
 					<Route element={<BuyCar />} path="/BuyCar" />
 					<Route element={<CarPage />} path="/CarPage" />
 					<Route element={<MessPage />} path="/MessPage" />
+					<Route element={<PasswordPage/>} path="/PasswordPage"/>
 					
 					<Route element={<AdminRoutes />}>
 						<Route element={<AdminPage />} path="/AdminPage" />
