@@ -1,8 +1,9 @@
 import express from 'express'
-import { register, login, getUser, getUserInfo, getAllUsers, updateProfile } from '../controllers/user.js'
+import { register, login, getUser, getUserInfo, getAllUsers, updateProfile, updatePassword } from '../controllers/user.js'
 import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus, getAdminCars, searchCars, 
     getBrandsAndModels, getBrands, addBrand, addModel, flagAsDeleted } from '../controllers/cars.js'
 import { changeUserAdmin, changeUserStatus } from '../controllers/admin.js'
+import { addChat, addMessage, getChatsForUser, getChatById } from '../controllers/chat.js'
 import multer from 'multer'
 import path from 'path'
 import Car from '../models/Car.js'
@@ -44,6 +45,12 @@ mainRouter.get('/user/info', getUserInfo)
 mainRouter.get('/user/get-all-users', getAllUsers)
 mainRouter.post('/user/update-profile', updateProfile)
 mainRouter.post('/user/recover-password', )
+mainRouter.post('/user/update-password', updatePassword)
+
+mainRouter.get("/chat/user-chats", getChatsForUser)
+mainRouter.post('/chat/get-chat', getChatById);
+mainRouter.post('/chat/add-chat', addChat);
+mainRouter.post('/chat/add-message', addMessage);
 
 mainRouter.post('/cars/add-new', upload.single('image'), addCar)
 mainRouter.get('/cars/get-cars', getCars)

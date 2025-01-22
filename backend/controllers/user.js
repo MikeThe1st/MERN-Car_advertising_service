@@ -146,3 +146,44 @@ export const updateProfile = async (req, res) => {
         res.status(500).json({ error: 'Failed to update profile' });
     }
 };
+
+export const updatePassword = async (req, res) => {
+    try {
+        const { email, prevPassword, newPassword, repeatPassword } = req.body;
+
+        // Validate request body
+        if (!email || !prevPassword || !newPassword || !repeatPassword) {
+            return res.status(400).json({ msg: 'All fields are required.' });
+        }
+
+        // Check if user exists
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found.' });
+        }
+
+        // Verify the previous password
+        const isMatch = await bcrypt.compare(prevPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Previous password is incorrect.' });
+        }
+
+        // Check if newPassword matches repeatPassword
+        if (newPassword !== repeatPassword) {
+            return res.status(400).json({ msg: 'New passwords do not match.' });
+        }
+
+        // Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update the user's password
+        user.password = hashedPassword;
+        await user.save();
+
+        return res.status(200).json({ msg: 'Password updated successfully.' });
+    } catch (err) {
+        console.error('Error updating password:', err);
+        return res.status(500).json({ error: 'Failed to update password.' });
+    }
+};

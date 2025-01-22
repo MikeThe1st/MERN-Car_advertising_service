@@ -90,7 +90,7 @@ export const getCarById = async (req, res) => {
 export const getCarsAddedby = async (req, res) => {
     try {
         const { addedBy } = req.query;
-        const cars = await Car.find({ addedBy });
+        const cars = await Car.find({ addedBy, is_deleted: false });
         return res.status(200).json(cars);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch cars.' });

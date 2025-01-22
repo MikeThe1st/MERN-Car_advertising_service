@@ -17,6 +17,8 @@ import AdminPage from "./pages/AdminPage.jsx";
 import MessPage from './pages/MessPage.jsx'
 import AdminRoutes from "./AdminRoutes.jsx";
 import PasswordPage from "./pages/PasswordPage.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
+
 function App() {
 
 	return (
@@ -35,7 +37,9 @@ function App() {
 					<Route element={<CarPage />} path="/CarPage" />
 					<Route element={<MessPage />} path="/MessPage" />
 					<Route element={<PasswordPage/>} path="/PasswordPage"/>
-					
+
+					<Route path="/ChatPage/:chatId" element={<ChatPage />} />
+
 					<Route element={<AdminRoutes />}>
 						<Route element={<AdminPage />} path="/AdminPage" />
 

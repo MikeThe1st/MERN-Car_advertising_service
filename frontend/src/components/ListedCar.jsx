@@ -23,6 +23,30 @@ const ListedCar = ({ car }) => {
             console.error('Error updating car status:', error);
         }
     };
+
+    const deleteCar = async () => {
+        try {
+            const confirmAction = window.confirm(
+                'Czy na pewno chcesz trwale usunąć to ogłoszenie? Ta operacja jest nieodwracalna.'
+            );
+    
+            if (!confirmAction) return;
+
+            const response = await axios.post(`http://localhost:3000/backend/cars/mark-as-deleted`, {
+                carId: car._id,
+            });
+
+            if (response.status === 200) {
+                alert('Ogłoszenie zostało trwale usunięte.');
+                window.location.reload(); // Reload to reflect changes
+            } else {
+                console.error('Failed to delete car:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting car:', error);
+        }
+    };
+
     return (
         <Card className="listed-car-card shadow-sm">
             <Card.Img variant="top" src={`http://localhost:3000/public/${car?.imgPath}`} alt={car.name} />
@@ -34,6 +58,9 @@ const ListedCar = ({ car }) => {
                 </Button>
                 <Button variant="secondary" className="m-1" onClick={toggleCarStatus}>
                     {car.is_active ? 'Usuń ogłoszenie' : 'Przywróć ogłoszenie'}
+                </Button>
+                <Button variant="danger" onClick={deleteCar}>
+                    Usuń ogłoszenie
                 </Button>
             </Card.Body>
         </Card>
