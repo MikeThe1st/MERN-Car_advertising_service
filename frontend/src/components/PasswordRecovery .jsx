@@ -13,7 +13,7 @@ const PasswordRecovery = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:3000/backend/auth/recover-password', {
+            const response = await axios.post('http://localhost:3000/backend/user/recover-password', {
                 email,
             });
             setMessage('Link do resetowania hasła został wysłany na podany adres email.');

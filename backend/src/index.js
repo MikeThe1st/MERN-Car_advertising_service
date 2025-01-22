@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import path from 'path'
 import Car from '../models/Car.js'
 import mainRouter from '../routes/main.js'
+import Brand from '../models/Brand.js'
 
 dotenv.config()
 const app = express()
@@ -30,7 +31,7 @@ const start = async () => {
             .catch((error) => {
                 console.error('Error connecting to MongoDB:', error);
             })
-
+            
         app.listen(appPort, () => console.log(`App is running on Port: ${appPort}`))
     } catch (error) {
         console.log(error)

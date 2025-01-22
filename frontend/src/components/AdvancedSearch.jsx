@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/AdvancedSearch.css";
 
 import axios from "axios";
@@ -21,33 +21,24 @@ const AdvancedSearch = ({ onSearch, cars, setCars }) => {
 		maxHorsePower: '',
 	});
 
+	const [brandModels, setBrandModels] = useState([]);
 	const [models, setModels] = useState([]);
+	useEffect(() => {
+        const fetchBrandModels = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/backend/cars/brands-and-models'); // Replace with your endpoint
+                const formattedData = response.data.reduce((acc, item) => {
+                    acc[item.brand] = item.models;
+                    return acc;
+                }, {});
+                setBrandModels(formattedData); // Set the state with formatted data
+            } catch (error) {
+                console.error('Error fetching brand-model data:', error);
+            }
+        };
 
-
-	const brandModels = {
-		Mercedes: ["A-Class", "C-Class", "E-Class", "S-Class", "GLA"],
-		BMW: ["1 Series", "3 Series", "5 Series", "7 Series", "X5"],
-		Audi: ["A3", "A4", "A6", "Q5", "Q7"],
-		Volkswagen: ["Golf", "Passat", "Tiguan", "Polo", "Arteon"],
-		Toyota: ["Corolla", "Camry", "RAV4", "Yaris", "Hilux"],
-		Honda: ["Civic", "Accord", "CR-V", "Jazz", "HR-V"],
-		Ford: ["Fiesta", "Focus", "Mondeo", "Mustang", "Kuga"],
-		Chevrolet: ["Spark", "Malibu", "Equinox", "Tahoe", "Traverse"],
-		Nissan: ["Micra", "Qashqai", "X-Trail", "Juke", "Navara"],
-		Hyundai: ["i10", "i20", "i30", "Tucson", "Santa Fe"],
-		Kia: ["Rio", "Ceed", "Sportage", "Sorento", "Picanto"],
-		Mazda: ["Mazda2", "Mazda3", "Mazda6", "CX-5", "CX-30"],
-		Renault: ["Clio", "Megane", "Kadjar", "Talisman", "Captur"],
-		Peugeot: ["208", "308", "508", "2008", "3008"],
-		Fiat: ["500", "Panda", "Tipo", "Doblo", "Punto"],
-		Volvo: ["XC40", "XC60", "XC90", "S60", "V60"],
-		Opel: ["Corsa", "Astra", "Insignia", "Crossland", "Mokka"],
-		Jeep: ["Renegade", "Compass", "Wrangler", "Cherokee", "Grand Cherokee"],
-		Subaru: ["Impreza", "Outback", "Forester", "XV", "Legacy"],
-		Skoda: ["Octavia", "Superb", "Fabia", "Kodiaq", "Kamiq"],
-		Seat: ["Ibiza", "Leon", "Arona", "Ateca", "Tarraco"],
-		Suzuki: ["Swift", "Vitara", "Jimny", "Baleno", "SX4"],
-	};
+        fetchBrandModels();
+    }, []);
 
 	// Obsługa zmian w formularzu
 	const handleInputChange = (e) => {

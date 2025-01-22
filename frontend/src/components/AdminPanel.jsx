@@ -43,6 +43,24 @@ const AdminPanel = () => {
         }
     };
 
+    const handleDeleteCar = async (carId, isActive) => {
+        try {
+            await axios.post('http://localhost:3000/backend/cars/mark-as-deleted', {
+                carId,
+            });
+            alert(`Car has been deleted.`);
+            // setCars((prevCars) =>
+            //     prevCars.map((car) =>
+            //         car._id === carId ? { ...car, is_active: !isActive } : car
+            //     )
+            // );
+            window.location.reload()
+        } catch (err) {
+            console.error('Error toggling car status:', err);
+            alert('Failed to update car status.');
+        }
+    };
+
     if (loading) return <div className="loading">Loading cars...</div>;
     if (error) return <div className="error">{error}</div>;
 
@@ -56,7 +74,7 @@ const AdminPanel = () => {
                         <th>Marka</th>
                         <th>Model</th>
                         <th>Cena</th>
-                        <th>Status</th>
+                        <th>Czy aktywne?</th>
                         <th>Akcje</th>
                     </tr>
                 </thead>
@@ -67,7 +85,7 @@ const AdminPanel = () => {
                             <td>{car.brand}</td>
                             <td>{car.model}</td>
                             <td>{car.price} PLN</td>
-                            <td>{car.is_active ? 'Active' : 'Inactive'}</td>
+                            <td>{car.is_active ? 'Tak' : 'Nie'}</td>
                             <td>
                                 <Button
                                     variant={car.is_active ? 'danger' : 'success'}
@@ -75,6 +93,19 @@ const AdminPanel = () => {
                                 >
                                     {car.is_active ? 'Dezaktywuj' : 'Aktywuj'}
                                 </Button>
+                                <Button
+                                    variant={'danger'}
+                                    onClick={() => handleDeleteCar(car._id)}
+                                >
+                                    Usuń ogłoszenie
+                                </Button>
+                                <Button
+                                    variant={'success'}
+                                    href={`/CarPage?id=${car?._id}`}
+                                >
+                                    Sprawdź
+                                </Button>
+    
                             </td>
                         </tr>
                     ))}

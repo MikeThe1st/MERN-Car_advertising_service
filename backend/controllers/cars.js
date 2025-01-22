@@ -1,3 +1,4 @@
+import Brand from "../models/Brand.js";
 import Car from "../models/Car.js"
 import User from "../models/User.js";
 
@@ -118,7 +119,7 @@ export const changeCarStatus = async (req, res) => {
 
 export const getAdminCars = async (req, res) => {
     try {
-        const cars = await Car.find({}).sort({ createdAt: -1 })
+        const cars = await Car.find({is_deleted: false}).sort({ createdAt: -1 })
         return res.status(200).json(cars)
     } catch (error) {
         console.error('Display failed:', error);
@@ -160,3 +161,70 @@ export const searchCars = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch cars." });
     }
 };
+
+export const flagAsDeleted = async (req, res) => {
+    try {
+        const { carId } = req.body;
+        const updatedCar = await Car.findByIdAndUpdate(
+            carId,
+            { is_active: false, is_deleted: true },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).send('Car not found.');
+        }
+
+        res.status(200).send('Car marked as deleted successfully');
+    } catch (err) {
+        console.error('Error updating car status:', err);
+        res.status(500).json({ error: 'Failed to update car status.' });
+    }
+};
+
+export const getBrandsAndModels = async (req, res) => {
+    try {
+        const brandsWithModels = await Brand.find({})
+        return res.status(200).json(brandsWithModels)
+    } catch (error) {
+        console.error('Display failed:', error);
+        return res.status(500).json({ error: 'Display failed.' });
+    }
+}
+
+export const getBrands = async (req, res) => {
+    try {
+      const brands = await Brand.find().select('brand -_id');
+      res.json(brands.map((car) => car.brand));
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching brands.', details: error });
+    }
+}
+
+export const addBrand = async (req, res) => {
+    const { brand } = req.body;
+    try {
+      const newBrand = new Brand({ brand });
+      await newBrand.save();
+      res.status(201).json({ msg: `Brand: ${brand} added successfully.` });
+    } catch (error) {
+      res.status(500).json({ error: 'Error adding brand.', details: error });
+    }
+}
+
+export const addModel = async (req, res) => {
+    const { brand, model } = req.body;
+    try {
+      const car = await Brand.findOne({ brand });
+      if (!car) {
+        return res.status(404).json({ error: 'Brand not found.' });
+      }
+      if (!car.models.includes(model)) {
+        car.models.push(model);
+        await car.save();
+      }
+      res.status(201).json({ msg: `Model: ${model} added successfully to brand: ${brand}.` });
+    } catch (error) {
+      res.status(500).json({ error: 'Error adding model.', details: error });
+    }
+  }

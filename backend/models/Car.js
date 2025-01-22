@@ -30,7 +30,8 @@ const CarSchema = new mongoose.Schema(
         },
         location: { type: String, required: true },
         views: { type: Number, default: 0 },
-        is_active: { type: Boolean, default: true}
+        is_active: { type: Boolean, default: true},
+        is_deleted: {type: Boolean, default: false}
     },
     { timestamps: true }
 );
