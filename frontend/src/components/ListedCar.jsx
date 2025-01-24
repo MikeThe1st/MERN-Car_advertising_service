@@ -1,4 +1,3 @@
-// src/components/ListedCar.jsx
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import '../css/ListedCar.css';
@@ -15,7 +14,7 @@ const ListedCar = ({ car }) => {
 
             if (response.status === 200) {
                 alert(`Ogłoszenie zostało ${car.is_active ? 'usunięte' : 'przywrócone'}.`);
-                window.location.reload()
+                window.location.reload();
             } else {
                 console.error('Failed to update car status:', response.statusText);
             }
@@ -29,7 +28,7 @@ const ListedCar = ({ car }) => {
             const confirmAction = window.confirm(
                 'Czy na pewno chcesz trwale usunąć to ogłoszenie? Ta operacja jest nieodwracalna.'
             );
-    
+
             if (!confirmAction) return;
 
             const response = await axios.post(`http://localhost:3000/backend/cars/mark-as-deleted`, {
@@ -53,13 +52,16 @@ const ListedCar = ({ car }) => {
             <Card.Body>
                 <Card.Title>{car.brand} {car.model}</Card.Title>
                 <Card.Text>Cena: {car.price} PLN</Card.Text>
-                <Button variant="primary" href={`/CarPage?id=${car._id}`}>
+                <Button className="m-2" variant="primary" href={`/CarPage?id=${car._id}`}>
                     Zobacz szczegóły
                 </Button>
-                <Button variant="secondary" className="m-1" onClick={toggleCarStatus}>
+                <Button className="m-2" variant="primary" href={`/EditCarPage?id=${car._id}`}>
+                    Edytuj
+                </Button>
+                <Button className="m-2" variant="secondary" onClick={toggleCarStatus}>
                     {car.is_active ? 'Usuń ogłoszenie' : 'Przywróć ogłoszenie'}
                 </Button>
-                <Button variant="danger" onClick={deleteCar}>
+                <Button className="m-2" variant="danger" onClick={deleteCar}>
                     Usuń ogłoszenie
                 </Button>
             </Card.Body>

@@ -1,0 +1,48 @@
+/* Ogólne style kontenera */
+.car-edit-container {
+    padding: 50px;
+    margin-top: 600px;
+  }
+  
+  .car-edit-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+  /* Formularz */
+  .car-edit-form {
+    margin-top: 30px;
+  }
+  
+  .car-edit-table-container {
+    overflow-x: auto;
+  }
+  
+  .car-edit-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .car-edit-table td {
+    padding: 10px;
+  }
+  
+  .car-edit-table input,
+  .car-edit-table select,
+  .car-edit-table textarea {
+    width: 100%;
+  }
+  
+  .seller-info {
+    margin-top: 30px;
+  }
+  
+  .loading {
+    font-size: 1.2rem;
+    color: gray;
+  }
+  
+  .error {
+    color: red;
+  }
+  

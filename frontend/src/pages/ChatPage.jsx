@@ -72,38 +72,39 @@ const ChatPage = () => {
     return (
         <div>
             <Navbar />
-        <div className="chat-page">
-            {chat ? (
-                <>
-                    <div className="chat-header">
-                        <h4>Chat with {chat.users.find((user) => user !== userEmail)}</h4>
-                    </div>
-                    <div className="chat-messages">
-                        {chat.chat.map((msg, index) => (
-                            <div
-                            key={index}
-                            className={`message ${msg.sender === userEmail ? 'sent' : 'received'}`}
-                            >
-                                <p>{msg.message}</p>
-                                <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="chat-input">
-                        <input
-                            type="text"
-                            placeholder="Type a message..."
-                            value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)}
+            <div className="chat-page">
+                {chat ? (
+                    <>
+                        <div className="chat-header">
+                            <h4>Chat with {chat.users.find((user) => user !== userEmail)}</h4>
+                        </div>
+                        <div className="chat-messages">
+                            {chat.chat.map((msg, index) => (
+                                <div
+                                    key={index}
+                                    className={`message ${msg.sender === userEmail ? 'sent' : 'received'}`}
+                                >
+                                    <p>{msg.message}</p>
+                                    <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Przeniesienie pola do pisania wiadomości poniżej */}
+                        <div className="chat-input">
+                            <input
+                                type="text"
+                                placeholder="Type a message..."
+                                value={messageInput}
+                                onChange={(e) => setMessageInput(e.target.value)}
                             />
-                        <button onClick={sendMessage}>Send</button>
-                    </div>
-                </>
-            ) : (
-                <p>No chat data available.</p>
-            )}
-        </div>
+                            <button onClick={sendMessage}>Send</button>
+                        </div>
+                    </>
+                ) : (
+                    <p>No chat data available.</p>
+                )}
             </div>
+        </div>
     );
 };
 

@@ -18,6 +18,7 @@ import MessPage from './pages/MessPage.jsx'
 import AdminRoutes from "./AdminRoutes.jsx";
 import PasswordPage from "./pages/PasswordPage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
+import EditCarPage from "./pages/EditCarPage.jsx";
 
 function App() {
 
@@ -37,7 +38,7 @@ function App() {
 					<Route element={<CarPage />} path="/CarPage" />
 					<Route element={<MessPage />} path="/MessPage" />
 					<Route element={<PasswordPage/>} path="/PasswordPage"/>
-
+					<Route element={<EditCarPage/>} path="/EditCarPage"/>
 					<Route path="/ChatPage/:chatId" element={<ChatPage />} />
 
 					<Route element={<AdminRoutes />}>

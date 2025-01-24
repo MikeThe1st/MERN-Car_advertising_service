@@ -1,0 +1,17 @@
+.message-page {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    height: 100vh; /* Ustawienie pełnej wysokości okna */
+}
+
+.chat-list-container {
+    flex: 1;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+   
+}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChatList from '../components/ChatList';
-import ChatDetails from './ChatDetails.jsx';
-
 import axios from 'axios';
+import '../css/MessagePage.css'; // Importujemy nowy plik CSS
 
 const MessagePage = () => {
     const [selectedChat, setSelectedChat] = useState(null);
@@ -31,19 +30,9 @@ const MessagePage = () => {
     }, []);
 
     return (
-        <div style={{ display: 'flex', gap: '20px', padding: '20px', backgroundColor: '#f9f9f9' }}>
+        <div className="message-page">
             {/* Lista dymków po lewej stronie */}
-            <div
-                style={{
-                    flex: 1,
-                    background: '#fff',
-                    padding: '15px',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                    overflowY: 'auto',
-                    maxHeight: '600px',
-                }}
-            >
+            <div className="chat-list-container">
                 <ChatList onSelectChat={handleChatSelect} providedEmail={userEmail}/>
             </div>
         </div>
