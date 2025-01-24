@@ -282,23 +282,29 @@ const CarListingForm = ({ email }) => {
                 </Row>
 
                 <Row className="mb-3">
-                    <Col md={4}>
-                        <Form.Group controlId="formColor">
-                            <Form.Label>Kolor</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="color"
-                                value={carData.color}
-                                onChange={handleChange}
-                                placeholder="Kolor"
-                                required
-                                isInvalid={!!errors.color}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.color}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Col>
+                <Col md={4}>
+                    <Form.Group controlId="formColor">
+                        <Form.Label>Kolor</Form.Label>
+                        <Form.Select
+                            name="color"
+                            value={carData.color}
+                            onChange={handleChange}
+                            required
+                            isInvalid={!!errors.color}
+                        >
+                            <option value="">Wybierz kolor</option>
+                            <option value="Czarny">Czarny</option>
+                            <option value="Biały">Biały</option>
+                            <option value="Niebieski">Niebieski</option>
+                            <option value="Zielony">Zielony</option>
+                            <option value="Żółty">Żółty</option>
+                            <option value="Czerwony">Czerwony</option>
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            {errors.color}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
                     <Col md={4}>
                         <Form.Group controlId="formFuel">
                             <Form.Label>Paliwo</Form.Label>
@@ -310,10 +316,10 @@ const CarListingForm = ({ email }) => {
                                 isInvalid={!!errors.fuel}
                             >
                                 <option value="">Wybierz rodzaj paliwa</option>
-                                <option value="Petrol">Benzyna</option>
+                                <option value="Benzyna">Benzyna</option>
                                 <option value="Diesel">Diesel</option>
-                                <option value="Electric">Elektryczny</option>
-                                <option value="Hybrid">Hybrida</option>
+                                <option value="Elektryczny">Elektryczny</option>
+                                <option value="Hybryda">Hybrida</option>
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
                                 {errors.fuel}
@@ -331,8 +337,8 @@ const CarListingForm = ({ email }) => {
                                 isInvalid={!!errors.gearbox}
                             >
                                 <option value="">Wybierz skrzynię biegów</option>
-                                <option value="Manual">Manualna</option>
-                                <option value="Automatic">Automatyczna</option>
+                                <option value="Manualna">Manualna</option>
+                                <option value="Automatyczna">Automatyczna</option>
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">
                                 {errors.gearbox}

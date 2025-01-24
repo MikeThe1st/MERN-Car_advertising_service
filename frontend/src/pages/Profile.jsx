@@ -104,7 +104,7 @@ const EditProfile = () => {
                     <Row>
                         <Col md={4} className="text-center">
                             <ProfilePicture
-                                src={user?.profilePicture || 'https://via.placeholder.com/150'}
+                                src={user?.profilePicture || 'https://placehold.jp/150x150.png'}
                                 alt={`${user?.name}'s profile`}
                                 className="profile-picture"
                             />

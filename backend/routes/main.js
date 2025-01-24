@@ -1,7 +1,9 @@
 import express from 'express'
-import { register, login, getUser, getUserInfo, getAllUsers, updateProfile, updatePassword } from '../controllers/user.js'
+import { register, login, getUser, getUserInfo, getAllUsers, updateProfile, 
+    updatePassword, forgotPassword } from '../controllers/user.js'
 import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus, getAdminCars, searchCars, 
-    getBrandsAndModels, getBrands, addBrand, addModel, flagAsDeleted } from '../controllers/cars.js'
+    getBrandsAndModels, getBrands, addBrand, addModel, flagAsDeleted, 
+    updateCar} from '../controllers/cars.js'
 import { changeUserAdmin, changeUserStatus } from '../controllers/admin.js'
 import { addChat, addMessage, getChatsForUser, getChatById } from '../controllers/chat.js'
 import multer from 'multer'
@@ -11,7 +13,6 @@ import Car from '../models/Car.js'
 // Multer config
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // const uploadPath = path.join(path.resolve(), 'frontend/public/car_imgs');
         const uploadPath = path.join(path.resolve(), '/public');
         cb(null, uploadPath);
     },
@@ -38,20 +39,23 @@ const upload = multer({ storage: storage, fileFilter });
 
 const mainRouter = express.Router()
 
+//USER
 mainRouter.post('/user/register', register)
 mainRouter.post('/user/login', login)
 mainRouter.get('/user/get-user', getUser)
 mainRouter.get('/user/info', getUserInfo)
 mainRouter.get('/user/get-all-users', getAllUsers)
 mainRouter.post('/user/update-profile', updateProfile)
-mainRouter.post('/user/recover-password', )
+mainRouter.post('/user/recover-password', forgotPassword)
 mainRouter.post('/user/update-password', updatePassword)
 
+//CHAT
 mainRouter.get("/chat/user-chats", getChatsForUser)
 mainRouter.post('/chat/get-chat', getChatById);
 mainRouter.post('/chat/add-chat', addChat);
 mainRouter.post('/chat/add-message', addMessage);
 
+//CARS
 mainRouter.post('/cars/add-new', upload.single('image'), addCar)
 mainRouter.get('/cars/get-cars', getCars)
 mainRouter.get('/cars/main-page', getMainPageCars)
@@ -61,12 +65,15 @@ mainRouter.post('/cars/status', changeCarStatus)
 mainRouter.post('/cars/mark-as-deleted', flagAsDeleted)
 mainRouter.get('/cars/admin', getAdminCars)
 mainRouter.post('/cars/search', searchCars)
+mainRouter.put('/cars/update-car/:id', updateCar)
 
+//BRANDS AND MODELS
 mainRouter.get('/cars/brands-and-models', getBrandsAndModels)
 mainRouter.get('/cars/brands', getBrands)
 mainRouter.post('/cars/add-brand', addBrand)
 mainRouter.post('/cars/add-model', addModel)
 
+//ADMIN
 mainRouter.post('/admin/toggle-user-status', changeUserStatus)
 mainRouter.post('/admin/toggle-permissions', changeUserAdmin)
 

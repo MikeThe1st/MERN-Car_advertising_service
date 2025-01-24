@@ -28,17 +28,18 @@ const CarEditPage = () => {
         setCar(response.data.updatedCar);
         setSeller(response.data.seller[0]);
         setFormData({
+          id: response.data.updatedCar._id,
           brand: response.data.updatedCar.brand,
           model: response.data.updatedCar.model,
-          year: response.data.updatedCar.year,
+          productionYear: response.data.updatedCar.productionYear, 
           mileage: response.data.updatedCar.mileage,
-          enginePower: response.data.updatedCar.enginePower,
+          horsePower: response.data.updatedCar.horsePower,
           color: response.data.updatedCar.color,
           fuel: response.data.updatedCar.fuel,
-          transmission: response.data.updatedCar.transmission,
+          gearbox: response.data.updatedCar.gearbox, 
           location: response.data.updatedCar.location,
           description: response.data.updatedCar.description,
-          damaged: response.data.updatedCar.damaged,
+          is_damaged: response.data.updatedCar.is_damaged,
         });
       } catch (err) {
         console.error('Error fetching car:', err);
@@ -67,7 +68,7 @@ const CarEditPage = () => {
         formData
       );
       console.log('Car updated:', response.data);
-      // Handle success - maybe show a success message or redirect
+      alert("Edycja przebiegła pomyślnie.")
     } catch (err) {
       console.error('Error updating car:', err);
       setError('Failed to update car data.');
@@ -79,7 +80,7 @@ const CarEditPage = () => {
 
   return (
     <div className="car-edit-container">
-      <h1 className="car-edit-title">Edycja ogłoszenia samochodowego</h1>
+      <h1 className="car-edit-title">Edycja ogłoszenia samochodowego <p>id: {id}</p></h1>
       {car && seller && (
         <form onSubmit={handleSubmit} className="car-edit-form">
           <div className="car-edit-table-container">
@@ -116,7 +117,7 @@ const CarEditPage = () => {
                       type="number"
                       className="form-control"
                       name="year"
-                      value={formData.year || ''}
+                      value={formData.productionYear || ''}
                       onChange={handleChange}
                     />
                   </td>
@@ -140,7 +141,7 @@ const CarEditPage = () => {
                       type="number"
                       className="form-control"
                       name="enginePower"
-                      value={formData.enginePower || ''}
+                      value={formData.horsePower || ''}
                       onChange={handleChange}
                     />
                   </td>
@@ -148,13 +149,21 @@ const CarEditPage = () => {
                 <tr>
                   <td>Kolor</td>
                   <td>
-                    <input
-                      type="text"
-                      className="form-control"
+                    <select
                       name="color"
+                      className="form-select"
                       value={formData.color || ''}
                       onChange={handleChange}
-                    />
+                      required
+                    >
+                      <option value="">Wybierz kolor</option>
+                      <option value="Czarny">Czarny</option>
+                      <option value="Biały">Biały</option>
+                      <option value="Niebieski">Niebieski</option>
+                      <option value="Zielony">Zielony</option>
+                      <option value="Żółty">Żółty</option>
+                      <option value="Czerwony">Czerwony</option>
+                    </select>
                   </td>
                 </tr>
                 <tr>
@@ -165,11 +174,13 @@ const CarEditPage = () => {
                       className="form-select"
                       value={formData.fuel || ''}
                       onChange={handleChange}
+                      required
                     >
-                      <option value="">Wybierz</option>
+                      <option value="">Wybierz rodzaj paliwa</option>
                       <option value="Benzyna">Benzyna</option>
                       <option value="Diesel">Diesel</option>
                       <option value="Elektryczny">Elektryczny</option>
+                      <option value="Hybryda">Hybryda</option>
                     </select>
                   </td>
                 </tr>
@@ -177,66 +188,31 @@ const CarEditPage = () => {
                   <td>Skrzynia biegów</td>
                   <td>
                     <select
-                      name="transmission"
+                      name="gearbox"
                       className="form-select"
-                      value={formData.transmission || ''}
+                      value={formData.gearbox || ''}
                       onChange={handleChange}
+                      required
                     >
-                      <option value="">Wybierz</option>
+                      <option value="">Wybierz skrzynię biegów</option>
                       <option value="Manualna">Manualna</option>
                       <option value="Automatyczna">Automatyczna</option>
                     </select>
                   </td>
                 </tr>
                 <tr>
-                  <td>Lokalizacja</td>
-                  <td>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="location"
-                      value={formData.location || ''}
-                      onChange={handleChange}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Opis</td>
-                  <td>
-                    <textarea
-                      className="form-control"
-                      name="description"
-                      value={formData.description || ''}
-                      onChange={handleChange}
-                      rows="4"
-                    />
-                  </td>
-                </tr>
-                <tr>
                   <td>Pojazd uszkodzony?</td>
                   <td>
-                    <div className="form-check form-check-inline">
-                      <input
-                        type="radio"
-                        name="damaged"
-                        value="true"
-                        className="form-check-input"
-                        checked={formData.damaged === true}
-                        onChange={() => setFormData({ ...formData, damaged: true })}
-                      />
-                      <label className="form-check-label">Tak</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        type="radio"
-                        name="damaged"
-                        value="false"
-                        className="form-check-input"
-                        checked={formData.damaged === false}
-                        onChange={() => setFormData({ ...formData, damaged: false })}
-                      />
-                      <label className="form-check-label">Nie</label>
-                    </div>
+                    <select
+                      name="is_damaged"
+                      className="form-select"
+                      value={formData.is_damaged ? 'true' : 'false'}
+                      onChange={(e) => setFormData({ ...formData, is_damaged: e.target.value === 'true' })}
+                      required
+                    >
+                      <option value="true">Tak</option>
+                      <option value="false">Nie</option>
+                    </select>
                   </td>
                 </tr>
               </tbody>
@@ -249,9 +225,8 @@ const CarEditPage = () => {
         <div className="seller-info mt-4">
           <h4>Sprzedawca</h4>
           <p>Imię: {seller.name}</p>
-          <p>Kontakt: {seller.contact}</p>
           <p>Email: {seller.email}</p>
-          <p>Telefon: {seller.phone}</p>
+          <p>Telefon: {seller.phoneNumber}</p>
         </div>
       )}
     </div>

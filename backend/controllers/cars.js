@@ -6,7 +6,7 @@ export const addCar = async (req, res) => {
     try {
         // Destructure data from the request body
         const { brand, model, productionYear, price, fuel, is_damaged, color, mileage, description, horsePower, addedBy, gearbox, location } = req.body;
-
+        console.log(req.body);
         // Get car number
         const carCount = await Car.countDocuments();
 
@@ -227,4 +227,41 @@ export const addModel = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: 'Error adding model.', details: error });
     }
-  }
+}
+
+export const updateCar = async (req, res) => {
+    const { id } = req.params; // Extract the car ID from the route params
+
+    const { brand, model, productionYear,mileage, horsePower, color, fuel, 
+        gearbox, location, description,is_damaged} = req.body;
+
+    try {
+        const updatedCar = await Car.findByIdAndUpdate(
+            id,
+            {
+                brand,
+                model,
+                productionYear,
+                mileage,
+                horsePower,
+                color,
+                fuel,
+                gearbox,
+                location,
+                description,
+                is_damaged,
+            },
+            { new: true, runValidators: true } 
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ error: `Car with ID: ${id} not found.` });
+        }
+
+        // Respond with the updated car data
+        res.status(200).json({ message: 'Car updated successfully.', car: updatedCar });
+    } catch (error) {
+        console.error('Error updating car:', error.message);
+        res.status(500).json({ error: 'Failed to update car.' });
+    }
+}

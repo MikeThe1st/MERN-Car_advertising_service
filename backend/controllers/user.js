@@ -1,6 +1,7 @@
 import User from "../models/User.js"
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import nodemailer from "nodemailer"
 
 export const register = async (req, res) => {
     try {
@@ -36,7 +37,6 @@ export const login = async (req, res) => {
         if (isPasswordCorrect) {
             console.log('Password matches. Login successful.')
             const secretKey = process.env.JWT_SECRET
-            console.log(secretKey)
             const token = jwt.sign(email, secretKey)
             res.cookie("token", token, { httpOnly: false, secure: true, path: '/', sameSite: 'none', expiresIn: '1d' })
             return res.status(200).json({ token, msg: 'Login success.', login: loginUser.login })
@@ -187,3 +187,78 @@ export const updatePassword = async (req, res) => {
         return res.status(500).json({ error: 'Failed to update password.' });
     }
 };
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body
+        const user = await User.findOne({ email: email })
+        if (!user) {
+            return res.status(404).json({ msg: `User with email: ${email} not found.`, status: false })
+        }
+
+        const minLength = 8
+        const maxLength = 15
+        const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz'
+        const numbers = '0123456789'
+        const specialCharacters = '-_!*#$&'
+
+        // Ensure the inclusion of at least one character from each required set
+        const passwordArray = [
+            upperCaseLetters[Math.floor(Math.random() * upperCaseLetters.length)],
+            lowerCaseLetters[Math.floor(Math.random() * lowerCaseLetters.length)],
+            numbers[Math.floor(Math.random() * numbers.length)],
+            specialCharacters[Math.floor(Math.random() * specialCharacters.length)],
+        ]
+
+        const allCharacters = upperCaseLetters + lowerCaseLetters + numbers + specialCharacters
+
+        // Calculate the remaining length to fill (subtract 4 because we already have 4 characters guaranteed)
+        const remainingLength = Math.floor(Math.random() * (maxLength - minLength)) + minLength - 4
+
+        for (let i = 0; i < remainingLength; i++) {
+            passwordArray.push(allCharacters[Math.floor(Math.random() * allCharacters.length)])
+        }
+
+        // Shuffle the array to ensure the order of characters is random
+        const shuffleArray = (array) => array.sort(() => Math.random() - 0.5)
+
+        const password = shuffleArray(passwordArray).join('')
+
+        // Sending email
+        let transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.SENDING_MAIL,
+                pass: process.env.SENDING_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.SENDING_MAIL,
+            to: email,
+            subject: 'Recovery password - AutoMarket',
+            text: `Password: ${password}`
+        };
+
+        try {
+            let info = await transporter.sendMail(mailOptions);
+            console.log('Email sent:', info.response);
+        } catch (error) {
+            console.error('Error sending email:', error);
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        // Updating user
+        await User.findOneAndUpdate({ email: email }, { password: hashedPassword, resetPassword: true })
+
+        return res.status(201).json({ user: user, newPassword: password })
+    } catch (error) {
+        return res.status(500).json({ error: 'Authentication failed.', status: false })
+    }
+}

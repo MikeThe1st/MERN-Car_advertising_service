@@ -16,10 +16,17 @@ const PasswordRecovery = () => {
             const response = await axios.post('http://localhost:3000/backend/user/recover-password', {
                 email,
             });
-            setMessage('Link do resetowania hasła został wysłany na podany adres email.');
+            setMessage(`Link do resetowania hasła został wysłany na adres email: ${email}`);
         } catch (err) {
-            console.error('Error sending recovery email:', err);
-            setError('Nie udało się wysłać linku do odzyskiwania hasła. Spróbuj ponownie.');
+            if (err.response) {
+                if (err.response.status === 404) {
+                    setError(err.response.data.msg || 'User not found.');
+                } else {
+                    setError('Failed to send the recovery email. Please try again.');
+                }
+            } else {
+                setError('An unexpected error occurred. Please try again later.');
+            }
         }
     };
 
