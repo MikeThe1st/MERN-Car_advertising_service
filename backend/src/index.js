@@ -4,10 +4,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import path from 'path'
-import Car from '../models/Car.js'
 import mainRouter from '../routes/main.js'
-import Brand from '../models/Brand.js'
-import Message from '../models/Message.js'
 
 dotenv.config()
 const app = express()

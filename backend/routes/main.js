@@ -1,5 +1,5 @@
 import express from 'express'
-import { register, login, getUser, getUserInfo, getAllUsers, updateProfile, 
+import { register, login, getUser, getAllUsers, updateProfile, 
     updatePassword, forgotPassword } from '../controllers/user.js'
 import { addCar, getCars, getMainPageCars, getCarById, getCarsAddedby, changeCarStatus, getAdminCars, searchCars, 
     getBrandsAndModels, getBrands, addBrand, addModel, flagAsDeleted, 
@@ -43,7 +43,6 @@ const mainRouter = express.Router()
 mainRouter.post('/user/register', register)
 mainRouter.post('/user/login', login)
 mainRouter.get('/user/get-user', getUser)
-mainRouter.get('/user/info', getUserInfo)
 mainRouter.get('/user/get-all-users', getAllUsers)
 mainRouter.post('/user/update-profile', updateProfile)
 mainRouter.post('/user/recover-password', forgotPassword)

@@ -27,8 +27,8 @@ const EditProfile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/backend/user/info', { withCredentials: true });
-                setUser(response.data);
+                const response = await axios.get('http://localhost:3000/backend/user/get-user', { withCredentials: true });
+                setUser(response.data[0]);
 
                 const carsResponse = await axios.get('http://localhost:3000/backend/cars/added-by', {
                     params: { addedBy: response.data.email },

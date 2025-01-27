@@ -19,8 +19,8 @@ const MessagePage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/backend/user/info', { withCredentials: true });
-                setUserEmail(response.data.email);
+                const response = await axios.get('http://localhost:3000/backend/user/get-user', { withCredentials: true });
+                setUserEmail(response.data[0].email);
 
             } catch (err) {
                 setError('Failed to load data.');

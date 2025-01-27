@@ -5,7 +5,8 @@ import User from "../models/User.js";
 export const addCar = async (req, res) => {
     try {
         // Destructure data from the request body
-        const { brand, model, productionYear, price, fuel, is_damaged, color, mileage, description, horsePower, addedBy, gearbox, location } = req.body;
+        const { brand, model, productionYear, price, fuel, is_damaged, color, mileage, description, 
+            horsePower, addedBy, gearbox, location } = req.body;
         console.log(req.body);
         // Get car number
         const carCount = await Car.countDocuments();
