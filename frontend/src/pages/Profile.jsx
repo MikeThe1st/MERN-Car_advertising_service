@@ -31,7 +31,7 @@ const EditProfile = () => {
                 setUser(response.data[0]);
 
                 const carsResponse = await axios.get('http://localhost:3000/backend/cars/added-by', {
-                    params: { addedBy: response.data.email },
+                    params: { addedBy: response.data[0].email },
                 });
                 setCars(carsResponse.data);
             } catch (err) {
