@@ -7,13 +7,13 @@ import axios from 'axios';
 const ListedCar = ({ car }) => {
     const toggleCarStatus = async () => {
         try {
-            const response = await axios.post(`http://localhost:3000/backend/cars/status`, {
+            const response = await axios.patch(`http://localhost:3000/backend/cars/status`, {
                 carId: car._id,
                 newStatus: !car.is_active,
             });
 
             if (response.status === 200) {
-                alert(`Ogłoszenie zostało ${car.is_active ? 'usunięte' : 'przywrócone'}.`);
+                alert(`Ogłoszenie zostało ${car.is_active ? 'deaktywowane' : 'przywrócone'}.`);
                 window.location.reload();
             } else {
                 console.error('Failed to update car status:', response.statusText);
@@ -31,8 +31,8 @@ const ListedCar = ({ car }) => {
 
             if (!confirmAction) return;
 
-            const response = await axios.post(`http://localhost:3000/backend/cars/mark-as-deleted`, {
-                carId: car._id,
+            const response = await axios.patch(`http://localhost:3000/backend/cars/${car._id}/delete-status`, {}, { 
+                withCredentials: true
             });
 
             if (response.status === 200) {
@@ -59,7 +59,7 @@ const ListedCar = ({ car }) => {
                     Edytuj
                 </Button>
                 <Button className="m-2" variant="secondary" onClick={toggleCarStatus}>
-                    {car.is_active ? 'Usuń ogłoszenie' : 'Przywróć ogłoszenie'}
+                    {car.is_active ? 'Deaktywuj ogłoszenie' : 'Przywróć ogłoszenie'}
                 </Button>
                 <Button className="m-2" variant="danger" onClick={deleteCar}>
                     Usuń ogłoszenie

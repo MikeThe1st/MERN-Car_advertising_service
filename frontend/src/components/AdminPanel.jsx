@@ -27,7 +27,7 @@ const AdminPanel = () => {
 
     const handleToggleStatus = async (carId, isActive) => {
         try {
-            await axios.post('http://localhost:3000/backend/cars/status', {
+            await axios.patch('http://localhost:3000/backend/cars/status', {
                 carId,
                 newStatus: !isActive,
             });
@@ -45,15 +45,10 @@ const AdminPanel = () => {
 
     const handleDeleteCar = async (carId, isActive) => {
         try {
-            await axios.post('http://localhost:3000/backend/cars/mark-as-deleted', {
-                carId,
+            await axios.patch(`http://localhost:3000/backend/cars/${carId}/delete-status`, {}, { 
+                withCredentials: true 
             });
             alert(`Car has been deleted.`);
-            // setCars((prevCars) =>
-            //     prevCars.map((car) =>
-            //         car._id === carId ? { ...car, is_active: !isActive } : car
-            //     )
-            // );
             window.location.reload()
         } catch (err) {
             console.error('Error toggling car status:', err);

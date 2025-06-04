@@ -43,8 +43,9 @@ const EditableProfileForm = ({ initialData, onSave }) => {
 
         setLoading(true);
         try {
-            // Send updated data to backend (POST request)
-            const response = await axios.post('http://localhost:3000/backend/user/update-profile', formData, { withCredentials: true });
+            // Send updated data to backend (PUT request)
+            // Użyj formData._id, aby uzyskać identyfikator użytkownika do wstawienia w adresie URL
+            const response = await axios.put(`http://localhost:3000/backend/user/update-profile`, formData, { withCredentials: true });
             setLoading(false);
             // Call the onSave function to refresh parent component if needed
             onSave(response.data);

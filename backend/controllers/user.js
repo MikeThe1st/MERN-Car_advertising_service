@@ -90,7 +90,8 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { id } = req.params;
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
         res.json(updatedUser);
     } catch (err) {
         res.status(500).json({ error: 'Failed to update user.' });
@@ -133,10 +134,27 @@ export const getAllUsers = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const { name, email, phoneNumber, _id } = req.body;
+        const token = req.cookies?.token; // Pobieranie tokena z ciasteczek
+        if (!token) {
+            return res.status(401).json({ msg: 'Brak tokena uwierzytelniającego.' });
+        }
+
+        const secretKey = process.env.JWT_SECRET;
+        if (!secretKey) {
+            return res.status(500).json({ error: "JWT secret key is not configured." });
+        }
+
+        let decodedEmail;
+        try {
+            decodedEmail = jwt.verify(token, secretKey);
+        } catch (error) {
+            return res.status(401).json({ msg: 'Nieprawidłowy lub wygasły token.' });
+        }
+        
+        const { name, phoneNumber, _id } = req.body;
         const updatedUser = await User.findByIdAndUpdate(_id, {
             name,
-            email,
+            decodedEmail,
             phoneNumber,
         }, { new: true });
 
@@ -149,42 +167,53 @@ export const updateProfile = async (req, res) => {
 
 export const updatePassword = async (req, res) => {
     try {
-        const { email, prevPassword, newPassword, repeatPassword } = req.body;
-
-        // Validate request body
-        if (!email || !prevPassword || !newPassword || !repeatPassword) {
-            return res.status(400).json({ msg: 'All fields are required.' });
+        const token = req.cookies?.token; // Pobieranie tokena z ciasteczek
+        if (!token) {
+            return res.status(401).json({ msg: 'Brak tokena uwierzytelniającego.' });
         }
 
-        // Check if user exists
-        const user = await User.findOne({ email });
+        const secretKey = process.env.JWT_SECRET;
+        if (!secretKey) {
+            return res.status(500).json({ error: "JWT secret key is not configured." });
+        }
+
+        let decodedEmail;
+        try {
+            decodedEmail = jwt.verify(token, secretKey);
+        } catch (error) {
+            return res.status(401).json({ msg: 'Nieprawidłowy lub wygasły token.' });
+        }
+
+        const { prevPassword, newPassword, repeatPassword } = req.body;
+
+        if (!prevPassword || !newPassword || !repeatPassword) {
+            return res.status(400).json({ msg: 'Wszystkie pola są wymagane.' });
+        }
+
+        const user = await User.findOne({ email: decodedEmail }); 
         if (!user) {
-            return res.status(404).json({ msg: 'User not found.' });
+            return res.status(404).json({ msg: 'Użytkownik nie znaleziony.' });
         }
 
-        // Verify the previous password
         const isMatch = await bcrypt.compare(prevPassword, user.password);
         if (!isMatch) {
-            return res.status(400).json({ msg: 'Previous password is incorrect.' });
+            return res.status(400).json({ msg: 'Poprzednie hasło jest niepoprawne.' });
         }
 
-        // Check if newPassword matches repeatPassword
         if (newPassword !== repeatPassword) {
-            return res.status(400).json({ msg: 'New passwords do not match.' });
+            return res.status(400).json({ msg: 'Nowe hasła nie pasują do siebie.' });
         }
 
-        // Hash the new password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-        // Update the user's password
         user.password = hashedPassword;
         await user.save();
 
-        return res.status(200).json({ msg: 'Password updated successfully.' });
+        return res.status(200).json({ msg: 'Hasło zostało pomyślnie zaktualizowane.' });
     } catch (err) {
-        console.error('Error updating password:', err);
-        return res.status(500).json({ error: 'Failed to update password.' });
+        console.error('Błąd podczas aktualizacji hasła:', err);
+        return res.status(500).json({ error: 'Nie udało się zaktualizować hasła.' });
     }
 };
 

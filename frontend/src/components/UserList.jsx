@@ -27,9 +27,9 @@ const UserList = () => {
 
     const handleToggleStatus = async (userId, currentStatus) => {
         try {
-            await axios.post(
-                "http://localhost:3000/backend/admin/toggle-user-status",
-                { userId, isActive: !currentStatus }
+            await axios.patch(`http://localhost:3000/backend/admin/users/${userId}/status`,
+                { isActive: !currentStatus }, 
+                { withCredentials: true } 
             );
             if (!currentStatus) {
                 alert("Użytkownik został pomyślnie aktywowany.");
@@ -44,23 +44,31 @@ const UserList = () => {
     };
 
     const handleToggleAdmin = async (userId, currentAdminStatus) => {
-        try {
-            console.log(userId, currentAdminStatus)
-            await axios.post(
-                "http://localhost:3000/backend/admin/toggle-permissions",
-                { userId, isAdmin: !currentAdminStatus }
-            );
-            if (!currentAdminStatus) {
-                alert("Użytkownik został pomyślnie dodany jako administrator.");
-            } else {
-                alert("Użytkownik został pomyślnie usunięty z roli administratora.");
-            }
-            window.location.reload();
-        } catch (err) {
-            console.error("Błąd podczas zmiany roli administratora:", err);
+    try {
+        const newAdminStatus = !currentAdminStatus; 
+        console.log("Attempting to toggle admin status for userId:", userId, "from", currentAdminStatus, "to", newAdminStatus);
+
+        await axios.patch(
+            `http://localhost:3000/backend/admin/users/${userId}/permissions`, 
+            { isAdmin: newAdminStatus },
+            { withCredentials: true } 
+        );
+
+        if (newAdminStatus) {
+            alert("Użytkownik został pomyślnie dodany jako administrator.");
+        } else { 
+            alert("Użytkownik został pomyślnie usunięty z roli administratora.");
+        }
+        window.location.reload();
+    } catch (err) {
+        console.error("Błąd podczas zmiany roli administratora:", err);
+        if (err.response && err.response.status === 403) {
+            alert("Brak uprawnień. Tylko administratorzy mogą zmieniać uprawnienia innych użytkowników.");
+        } else {
             alert("Nie udało się zmienić roli administratora.");
         }
-    };
+    }
+};
 
     if (loading) return <div className="loading">Ładowanie listy użytkowników...</div>;
     if (error) return <div className="error">{error}</div>;

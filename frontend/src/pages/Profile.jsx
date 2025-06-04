@@ -30,9 +30,7 @@ const EditProfile = () => {
                 const response = await axios.get('http://localhost:3000/backend/user/get-user', { withCredentials: true });
                 setUser(response.data[0]);
 
-                const carsResponse = await axios.get('http://localhost:3000/backend/cars/added-by', {
-                    params: { addedBy: response.data[0].email },
-                });
+                const carsResponse = await axios.get(`http://localhost:3000/backend/cars/added-by/${response.data[0]._id}`);
                 setCars(carsResponse.data);
             } catch (err) {
                 setError('Failed to load data.');
@@ -75,12 +73,12 @@ const EditProfile = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/backend/user/update-password', {
+            const response = await axios.put('http://localhost:3000/backend/user/update-password', {
                 email: user.email,
                 prevPassword: passwordData.prevPassword,
                 newPassword: passwordData.newPassword,
                 repeatPassword: passwordData.repeatPassword,
-            });
+            }, { withCredentials: true});
 
             if (response.status === 200) {
                 setPasswordSuccess('Password updated successfully.');

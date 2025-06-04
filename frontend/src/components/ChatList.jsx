@@ -11,8 +11,8 @@ const ChatList = ({ providedEmail }) => {
         const fetchChats = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/backend/chat/user-chats', {
-                    params: { providedEmail },
-                });
+                withCredentials: true 
+            });
                 setChats(response.data);
             } catch (err) {
                 setError('Failed to load chats.');

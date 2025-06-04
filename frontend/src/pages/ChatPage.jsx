@@ -26,16 +26,15 @@ const ChatPage = () => {
         fetchUserData();
     }, []);
 
-    // Fetch the chat by ID using POST
+    
     useEffect(() => {
         const fetchChat = async () => {
-            if (!userEmail) return; // Wait for userEmail to be fetched
-
+            if (!userEmail) return; 
+            if (!chatId) return;
+            console.log(chatId)
             try {
-                const response = await axios.post('http://localhost:3000/backend/chat/get-chat', {
-                    chatId,
-                    userEmail,
-                });
+                const response = await axios.get(`http://localhost:3000/backend/chat/${chatId}`, 
+                    { withCredentials: true });
                 const chatData = response.data;
 
                 setChat(chatData);

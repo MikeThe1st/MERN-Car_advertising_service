@@ -1,5 +1,6 @@
 import Message from "../models/Message.js"
 import mongoose from "mongoose";
+import jwt from 'jsonwebtoken'
 
 export const addChat = async (req, res) => {
     try {
@@ -60,14 +61,32 @@ export const addMessage = async (req, res) => {
 
 export const getChatsForUser = async (req, res) => {
     try {
-        const { providedEmail } = req.query;
+        const token = req.cookies?.token; 
 
-        if (!providedEmail) {
-            return res.status(400).json({ msg: "Provided email is required." });
+        if (!token) {
+            return res.status(401).json({ msg: 'Brak tokena uwierzytelniającego. Zaloguj się, aby uzyskać dostęp do czatów.' });
+        }
+
+        const secretKey = process.env.JWT_SECRET;
+        if (!secretKey) {
+            console.error("JWT secret key is not configured in environment variables.");
+            return res.status(500).json({ error: "Błąd serwera: brak klucza uwierzytelniającego." });
+        }
+
+        let loggedInUserEmail;
+        try {
+            loggedInUserEmail = jwt.verify(token, secretKey); 
+        } catch (error) {
+            console.error('Błąd weryfikacji tokena w getChatsForUser:', error);
+            return res.status(401).json({ msg: 'Nieprawidłowy lub wygasły token. Zaloguj się ponownie.' });
+        }
+
+        if (!loggedInUserEmail) {
+            return res.status(401).json({ msg: "Nie udało się zdekodować emaila z tokena. Zaloguj się ponownie." });
         }
 
         // Find all chats involving the provided email
-        const chats = await Message.find({ users: providedEmail });
+        const chats = await Message.find({ users: loggedInUserEmail });
 
         if (!chats || chats.length === 0) {
             return res.status(404).json({ msg: "No chats found for the provided email." });
@@ -75,7 +94,7 @@ export const getChatsForUser = async (req, res) => {
 
         // Map chats to include only the other user and the last message
         const formattedChats = chats.map((chat) => {
-            const otherUser = chat.users.find((user) => user !== providedEmail);
+            const otherUser = chat.users.find((user) => user !== loggedInUserEmail);
             const lastMessage = chat.chat[chat.chat.length - 1]; // Get the last message in the chat
 
             return {
@@ -94,20 +113,36 @@ export const getChatsForUser = async (req, res) => {
 
 export const getChatById = async (req, res) => {
     try {
-        const { chatId, userEmail } = req.body; // Fetch chatId and userEmail from request body
+        const { id } = req.params;
 
-        if (!chatId || !userEmail) {
-            return res.status(400).json({ msg: 'Chat ID and user email are required.' });
+        const token = req.cookies?.token;
+        if (!token) {
+            return res.status(401).json({ msg: 'Brak tokena uwierzytelniającego.' });
+        }
+        const secretKey = process.env.JWT_SECRET;
+        if (!secretKey) {
+            return res.status(500).json({ error: "JWT secret key is not configured." });
         }
 
-        const chat = await Message.findById(chatId);
+        let userEmail;
+        try {
+            userEmail = jwt.verify(token, secretKey);
+        } catch (error) {
+            console.log(userEmail)
+            return res.status(401).json({ msg: 'Nieprawidłowy lub wygasły token.' });
+        }
+
+        if (!id) {
+            return res.status(400).json({ msg: 'Chat ID is required.' });
+        }
+
+        const chat = await Message.findById(id); 
 
         if (!chat) {
             return res.status(404).json({ msg: 'Chat not found.' });
         }
 
-        // Validate if the user is part of the chat
-        if (!chat.users.includes(userEmail)) {
+        if (!chat.users.includes(userEmail)) { 
             return res.status(403).json({ msg: 'You are not authorized to view this chat.' });
         }
 
