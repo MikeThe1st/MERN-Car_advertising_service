@@ -11,28 +11,41 @@ const ChatList = ({ providedEmail }) => {
         const fetchChats = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/backend/chat/user-chats', {
-                withCredentials: true 
-            });
+                    withCredentials: true 
+                });
                 setChats(response.data);
             } catch (err) {
-                setError('Failed to load chats.');
-                console.error(err);
+                // Enhanced error handling to display backend message if available
+                const errorMessage = err.response?.data?.msg || 'Failed to load chats.';
+                setError(errorMessage);
+                console.error('Error fetching chats:', err);
             } finally {
                 setLoading(false);
             }
         };
 
-        if (providedEmail) {
+        if (providedEmail) { 
             fetchChats();
+        } else {
+            setLoading(false); 
         }
     }, [providedEmail]);
 
     if (loading) {
-        return <p>Loading chats...</p>;
+        return <p>Ładowanie czatów...</p>;
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return <p>Wystąpił błąd: {error}</p>;
+    }
+
+    if (chats.length === 0) {
+        return (
+            <div>
+                <h2>Sprawdź swoje wiadomości</h2>
+                <p>Brak wiadomości.</p>
+            </div>
+        );
     }
 
     return (
@@ -41,7 +54,7 @@ const ChatList = ({ providedEmail }) => {
             <div>
                 {chats.map((chat) => (
                     <Link
-                        to={`/ChatPage/${chat.id}`} // Navigate to the specific chat page using chat ID
+                        to={`/ChatPage/${chat.id}`}
                         key={chat.id}
                         style={{
                             textDecoration: 'none',
@@ -59,7 +72,9 @@ const ChatList = ({ providedEmail }) => {
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f4f4f4')}
                     >
                         <h4 style={{ margin: 0, fontSize: '16px', color: '#333' }}>{chat.otherUser}</h4>
-                        <p style={{ margin: 0, fontSize: '14px', color: '#777' }}>{chat.lastMessage.message}</p>
+                        <p style={{ margin: 0, fontSize: '14px', color: '#777' }}>
+                            {chat.lastMessage ? chat.lastMessage.message : "Brak wiadomości w czacie."}
+                        </p>
                     </Link>
                 ))}
             </div>

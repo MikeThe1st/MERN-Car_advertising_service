@@ -89,7 +89,7 @@ export const getChatsForUser = async (req, res) => {
         const chats = await Message.find({ users: loggedInUserEmail });
 
         if (!chats || chats.length === 0) {
-            return res.status(404).json({ msg: "No chats found for the provided email." });
+            return res.status(200).json([]);
         }
 
         // Map chats to include only the other user and the last message
